@@ -93,12 +93,26 @@
       metricas:   '.hero-metrics__item'
     };
 
-    // Só os que existem de fato, para o clearProps final não reclamar.
+    // Só os que existem de fato E estão sendo desenhados. O segundo filtro
+    // existe por causa do mobile: abaixo de 767px a pill de regulamentação e o
+    // card de avaliação saem com `display: none`, e não faz sentido reservar
+    // lugar na timeline para eles. `offsetParent === null` acusa o elemento
+    // oculto sem precisar consultar o breakpoint — nenhuma condicional de
+    // largura no script, e o desktop continua com os oito alvos.
+    function renderizado(el) {
+      return el.offsetParent !== null ||
+             getComputedStyle(el).position === 'fixed';
+    }
+
+    function alvosDe(chave) {
+      return Array.prototype.slice.call(
+        document.querySelectorAll(alvos[chave])
+      ).filter(renderizado);
+    }
+
     var todos = [];
     Object.keys(alvos).forEach(function (chave) {
-      todos = todos.concat(Array.prototype.slice.call(
-        document.querySelectorAll(alvos[chave])
-      ));
+      todos = todos.concat(alvosDe(chave));
     });
 
     if (!todos.length) {
@@ -114,11 +128,14 @@
     // A assinatura abre a sequência: a máscara varre da esquerda para a
     // direita, no sentido em que o nome é escrito. Easing quase linear —
     // a mão de quem assina não desacelera como um objeto que entra em cena.
-    tl.to(alvos.assinatura, {
-      '--sig': '112%',
-      duration: 1,
-      ease: 'power1.out'
-    }, 0);
+    var assinatura = alvosDe('assinatura');
+    if (assinatura.length) {
+      tl.to(assinatura, {
+        '--sig': '112%',
+        duration: 1,
+        ease: 'power1.out'
+      }, 0);
+    }
 
     // `fromTo` em vez de `from`: o destino precisa ser explícito. Com `from`,
     // o GSAP lê o valor atual do elemento como destino — e o valor atual de
@@ -126,7 +143,9 @@
     // 0 a 0 e os elementos surgirem de uma vez só no clearProps final.
     // Só o eixo declarado é zerado no destino: o advogado carrega um
     // translateX(-50%) no CSS e escrever `x: 0` aqui tiraria a centralização.
-    function entra(alvo, de, posicao, duracao) {
+    function entra(chave, de, posicao, duracao) {
+      var alvo = alvosDe(chave);
+      if (!alvo.length) return;         // oculto neste breakpoint: nada a animar
       var inicio = { opacity: 0 };
       var fim = { opacity: 1, duration: duracao };
       if (de.x !== undefined) { inicio.x = de.x; fim.x = 0; }
@@ -137,23 +156,23 @@
 
     // Navbar e CONTATO entram da direita quase juntos: leem-se como uma
     // composição só, com um respiro de 0.07s entre eles.
-    entra(alvos.navLinks, { x: 34 }, 0.15, 0.65);
-    entra(alvos.contato,  { x: 34 }, 0.22, 0.65);
+    entra('navLinks', { x: 34 }, 0.15, 0.65);
+    entra('contato',  { x: 34 }, 0.22, 0.65);
 
     // Regulamentação — único movimento da esquerda para a direita.
-    entra(alvos.badge, { x: -28 }, 0.3, 0.6);
+    entra('badge', { x: -28 }, 0.3, 0.6);
 
     // Advogado, de baixo para cima. Sem escala e sem zoom: o PNG tem corte
     // reto na base e qualquer redimensionamento revelaria o recorte.
-    entra(alvos.advogado, { y: 44 }, 0.35, 0.75);
+    entra('advogado', { y: 44 }, 0.35, 0.75);
 
     // Card de avaliação como composição única (ícones, estrelas, nota e
     // textos vêm juntos), seguido do CTA na mesma linguagem.
-    entra(alvos.avaliacao, { x: 40 }, 0.45, 0.65);
-    entra(alvos.cta,       { x: 40 }, 0.55, 0.6);
+    entra('avaliacao', { x: 40 }, 0.45, 0.65);
+    entra('cta',       { x: 40 }, 0.55, 0.6);
 
     // Métricas: 25+ → 80% → 300+ → 100%, de baixo para cima.
-    entra(alvos.metricas, { y: 22, stagger: 0.08 }, 0.62, 0.6);
+    entra('metricas', { y: 22, stagger: 0.08 }, 0.62, 0.6);
 
     /* --- 3. Limpeza ------------------------------------------------------ */
 
@@ -171,7 +190,7 @@
       //    Também devolve ao CSS o translateX(-50%) do advogado, que
       //    precisa voltar a ser percentual para a responsividade.
       gsap.set(todos, { clearProps: 'opacity,transform' });
-      gsap.set(alvos.assinatura, { clearProps: '--sig' });
+      if (assinatura.length) gsap.set(assinatura, { clearProps: '--sig' });
 
       // O clearProps esvazia o style mas deixa o atributo vazio no elemento.
       // Removê-lo devolve o DOM exatamente à forma da versão estática.

@@ -659,9 +659,25 @@ dd {
     --hero-radius: 32px;
   }
 
+  /* Uma variável só para a faixa da figura: o `padding-bottom` reserva
+     exatamente a altura que o advogado ocupa, então os dois nunca divergem.
+     São três limites, e cada um resolve um caso:
+
+     552px  altura natural do PNG — passar disso seria ampliar bitmap;
+     127vw  trava de largura. A imagem é 417x552 (0.7554), então 127vw de
+            altura dá 96vw de largura: assim ela nunca encosta nas bordas e,
+            principalmente, o `max-width` nunca chega a agir. Isso importa
+            porque `max-width` num `<img>` com `height` fixo e `width: auto`
+            **achata** o desenho: medido em 430x932, a proporção caía de
+            0.7554 para 0.7478;
+     resto  `100vh - 344px` é o que sobra depois da coluna de conteúdo
+            (navbar, assinatura, CTA e respiros) já sem a pill e sem o card.
+            O `max()` com 44vh segura o piso em telas curtas, onde descontar
+            um valor fixo deixaria a figura pequena demais. */
   .hero__inner {
+    --hero-figura: min(552px, 127vw, max(44vh, calc(100vh - 350px)));
     gap: 22px;
-    padding: 16px 16px min(44vh, 552px);
+    padding: 16px 16px var(--hero-figura);
   }
 
   .hero-nav {
@@ -692,13 +708,23 @@ dd {
     height: 36px;
   }
 
+  /* Composição simplificada: a pill de regulamentação e o card de avaliação
+     saem do fluxo (`display: none`, não `opacity`), e o espaço que ocupavam
+     — 172px medidos em 390 x 844 — vai todo para a figura. */
+  .hero-brand__badge-wrap,
+  .hero-rating {
+    display: none;
+  }
+
   .hero-brand__signature {
     width: min(320px, 82vw);
   }
 
+  /* A largura continua `auto` — a proporção 417x552 sai da própria imagem,
+     nunca de width e height forçados juntos. */
   .hero__advogado {
-    height: min(44vh, 552px);
-    max-width: 92vw;
+    height: var(--hero-figura);
+    max-width: 96vw;
   }
 
   /* Métricas em grade 2 x 2 */
@@ -747,13 +773,12 @@ dd {
 @media (max-width: 419px) {
   /* A navbar quebra em duas linhas aqui — encolhe a faixa da figura
      para a barra de métricas continuar acima da dobra em telas curtas. */
+  /* Abaixo de 420px a navbar quebra em duas linhas: a coluna de conteúdo
+     cresce e a coluna encurta; a conta muda junto, para a barra de métricas
+     continuar acima da dobra. */
   .hero__inner {
+    --hero-figura: min(552px, 127vw, max(38vh, calc(100vh - 340px)));
     gap: 18px;
-    padding-bottom: min(38vh, 552px);
-  }
-
-  .hero__advogado {
-    height: min(38vh, 552px);
   }
 
   .hero-nav__links {
@@ -1219,19 +1244,16 @@ dd {
   color: var(--white);
 }
 
-
 /* 11.4 Estado ativo · nó 7:1471 — 302.5 x 378.4
    Todo o estilo do card selecionado está concentrado aqui: trocar a classe
-   entre os cards é suficiente para mover a seleção. */
+   entre os cards é suficiente para mover a seleção.
 
-/* Transborda o slot de 275px simetricamente (13.75 de cada lado) via margem
-   negativa, para não deslocar os cards seguintes — no Figma o card 2 continua
-   em x=432, na posição do slot. */
-.service-card--active {
-  width: 302.5px;
-  height: 378.4px;
-  margin-inline: -13.75px;
-}
+   As regras do estado ativo ficam num `@media (min-width: 768px)` no fim do
+   bloco: no mobile não existe navegação horizontal nem seleção, e o card 1
+   apareceria sozinho maior, com borda, glow e "+" sem que nada tivesse sido
+   escolhido. Escopar aqui evita repetir as medidas do card normal só para
+   desfazê-las depois — desktop e tablet enxergam exatamente a mesma cascata
+   de antes. A classe continua no HTML; só deixa de pintar abaixo de 768px. */
 
 /* Borda + glow · nó 8:20 — 6 camadas de sombra (18.952 / 37.903 / 125 x4).
    Duas decisões aqui:
@@ -1255,35 +1277,6 @@ dd {
     0 0 175px rgba(230, 199, 0, 0.17);
 }
 
-/* Círculo do ícone ampliado · nó 16:424 — 100 x 100 em left 101.75 / top 19.2 */
-.service-card--active .service-card__icon {
-  left: 101.75px;
-  top: 19.2px;
-  width: 100px;
-  height: 100px;
-  padding: 24px 20px;
-  border-radius: 50px;
-}
-
-/* Conteúdo · nó 8:2 — left 36.75 / top 137.2 */
-.service-card--active .service-card__body {
-  left: 36.75px;
-  top: 137.2px;
-}
-
-.service-card--active .service-card__title {
-  height: 68px;               /* 2 linhas de 34px (nó 7:1470) */
-  font-size: 28px;
-}
-
-.service-card--active .service-card__rule {
-  width: 80px;
-}
-
-.service-card--active .service-card__desc {
-  font-size: 14px;
-}
-
 /* Botão "+" · nó 8:23 — 28 x 28 centrado, top 334.2 */
 .service-card__more {
   position: absolute;
@@ -1305,6 +1298,46 @@ dd {
   line-height: 1;
   color: var(--gold);
   cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  /* Transborda o slot de 275px simetricamente (13.75 de cada lado) via margem
+     negativa, para não deslocar os cards seguintes — no Figma o card 2 continua
+     em x=432, na posição do slot. */
+  .service-card--active {
+    width: 302.5px;
+    height: 378.4px;
+    margin-inline: -13.75px;
+  }
+
+  /* Círculo do ícone ampliado · nó 16:424 — 100 x 100 em left 101.75 / top 19.2 */
+  .service-card--active .service-card__icon {
+    left: 101.75px;
+    top: 19.2px;
+    width: 100px;
+    height: 100px;
+    padding: 24px 20px;
+    border-radius: 50px;
+  }
+
+  /* Conteúdo · nó 8:2 — left 36.75 / top 137.2 */
+  .service-card--active .service-card__body {
+    left: 36.75px;
+    top: 137.2px;
+  }
+
+  .service-card--active .service-card__title {
+    height: 68px;               /* 2 linhas de 34px (nó 7:1470) */
+    font-size: 28px;
+  }
+
+  .service-card--active .service-card__rule {
+    width: 80px;
+  }
+
+  .service-card--active .service-card__desc {
+    font-size: 14px;
+  }
 }
 
 
@@ -1395,8 +1428,14 @@ dd {
     gap: 32px;
   }
 
-  .service-card--active {
-    width: min(302.5px, 84vw);
+  /* Nenhum card começa selecionado no mobile. As medidas do estado ativo já
+     estão escopadas em `min-width: 768px` (bloco 11.4); falta desligar os dois
+     elementos que existem só por causa da seleção. `display: none` e não
+     `opacity`: eles não devem ocupar lugar nem ser alcançáveis pelo teclado.
+     O bloco 18 só mexe em `opacity`/`visibility`, então não disputa isto. */
+  .service-card__glow,
+  .service-card__more {
+    display: none;
   }
 }
 
@@ -1818,32 +1857,15 @@ dd {
     flex: 0 0 auto;
   }
 
-  /* A linha de conexão passa a ser vertical, ligando os círculos empilhados */
+  /* Sem linha de conexão no mobile: empilhadas, as quatro etapas se leem como
+     uma sequência de blocos independentes, e o fio vertical atravessava os
+     círculos, os números decorativos e o texto. `display: none` apaga a linha
+     e os três pontos de uma vez; como `.processos__timeline` é `position:
+     absolute`, nada muda de posição e nenhum espaço fica reservado.
+     A timeline horizontal do desktop não é tocada. */
   .processos__timeline {
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    right: auto;
-    width: 1px;
+    display: none;
   }
-
-  .processos__line {
-    left: 0;
-    right: auto;
-    top: calc(161px * var(--proc-scale) + var(--circle-size) / 2);
-    bottom: 0;
-    width: 1px;
-    height: auto;
-  }
-
-  .processos__dot {
-    left: -6px;
-    top: auto;
-  }
-
-  .processos__dot--1 { top: 28%; }
-  .processos__dot--2 { top: 53%; }
-  .processos__dot--3 { top: 78%; }
 }
 
 
@@ -2335,7 +2357,21 @@ dd {
      transbordariam o card. Mesmos elementos e mesmas classes. */
   .feedback-card,
   .feedback-card.is-active {
-    position: static;
+    /* `relative` e não `static`: o retângulo interno é um `::before`
+       absoluto, e com o card estático ele passava a se posicionar contra o
+       ancestral posicionado mais próximo. Resultado medido num card de
+       338 x 246.8: o pseudo saía com 342 x 767.4 — mais largo que o card e
+       três vezes mais alto — e a borda dele atravessava os cards vizinhos.
+       Eram essas as linhas escuras. `relative` sem deslocamento não muda o
+       fluxo da coluna; `z-index: auto` mantém a ordem de pintura de antes,
+       já que os z-index 1/2/3 das regras base só valem posicionados. */
+    position: relative;
+    z-index: auto;
+    /* A regra base traz `bottom: 0` e `left: calc(50% + var(--slot-x))` para o
+       posicionamento absoluto do desktop. Estáticos, os cards ignoravam os
+       dois; `relative` faz deles deslocamento, e os cards saíam escalonados
+       para a direita. `inset: auto` zera os quatro de uma vez. */
+    inset: auto;
     transform: none;
     width: min(338px, 100%);
     height: auto;
@@ -2350,7 +2386,12 @@ dd {
     width: min(406px, 100%);
   }
 
-  .feedback-card::before {
+  /* O card ativo precisa entrar no seletor: `.feedback-card.is-active::before`
+     tem especificidade maior que `.feedback-card::before`, então as medidas
+     fixas do desktop (372 x 369) venciam aqui independentemente da ordem —
+     era o segundo motivo das linhas escuras, no card do meio. */
+  .feedback-card::before,
+  .feedback-card.is-active::before {
     inset: 8px 8px 7px;
     left: 8px;
     top: 8px;
