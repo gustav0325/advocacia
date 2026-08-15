@@ -728,6 +728,24 @@ dd {
     display: none;
   }
 
+  /* O botão também é desligado nele mesmo, e não só pelo pai. Escondendo
+     apenas `.hero-aside` o elemento já não renderiza nem ocupa espaço, mas
+     `getComputedStyle(botao).display` continua devolvendo `flex` — o display
+     de um filho não muda quando o ancestral sai — e inspecionar o botão dá a
+     impressão de que ele continua ativo. Com a regra abaixo o próprio nó
+     reporta `none`.
+
+     `.hero .hero-cta` (0,2,0) e não `.hero-cta` (0,1,0): a classe é
+     compartilhada com o CTA do fim de Feedbacks, que precisa continuar
+     visível aqui. O escopo pelo contêiner é o que separa os dois.
+
+     Sem `!important`: a única outra regra que declara `display` para esta
+     classe é a base `.hero-cta { display: flex }`, de especificidade menor.
+     Conferido pelo CSSOM — não há concorrente para sobrepor. */
+  .hero .hero-cta {
+    display: none;
+  }
+
   .hero-brand__signature {
     width: min(320px, 82vw);
   }
