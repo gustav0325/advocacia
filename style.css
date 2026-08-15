@@ -684,9 +684,14 @@ dd {
     gap: 14px;
   }
 
+  /* Navbar mais arejada. O gap e o padding lateral são fluidos em vez de um
+     degrau fixo por tela: assim o espaço cresce junto com a largura e não é
+     preciso escolher um valor que sirva a 430px e estoure a 320. Só o eixo
+     horizontal muda — o padding vertical de 11px, o raio e a altura da
+     cápsula ficam exatamente como estavam. */
   .hero-nav__links {
-    gap: 18px;
-    padding: 11px 16px;
+    gap: clamp(20px, 5.6vw, 26px);
+    padding: 11px clamp(16px, 4.6vw, 20px);
     border-radius: 14px;
   }
 
@@ -781,9 +786,12 @@ dd {
     gap: 18px;
   }
 
+  /* Abaixo de 420px a fonte já cai para 12px e a folga encolhe: os limites do
+     `clamp` descem junto, para os quatro links continuarem numa linha só a
+     320px, que é onde a margem é mínima. */
   .hero-nav__links {
-    gap: 12px;
-    padding: 10px 12px;
+    gap: clamp(14px, 4.8vw, 22px);
+    padding: 10px clamp(12px, 3.6vw, 16px);
   }
 
   .hero-nav__link {
@@ -1413,6 +1421,30 @@ dd {
 
   .servicos__subtitle {
     font-size: 15px;
+  }
+
+  /* Background mais discreto no mobile. Em tela pequena os painéis
+     horizontais da foto passam bem atrás dos cards e competem com eles.
+
+     O véu é um `::after` do próprio `.servicos__bg`, não uma camada solta:
+     `.servicos__bg` e `.servicos__inner` são irmãos posicionados com z-index
+     automático, então a ordem de pintura é a ordem da árvore — o pseudo,
+     sendo descendente do primeiro, cai exatamente entre os dois. Fundo →
+     véu → conteúdo, sem precisar de um único z-index e sem chance de passar
+     por cima de card, pill, título ou CTA.
+
+     `opacity` fica de fora de propósito: aplicada na seção, ela apagaria
+     também os cards e os textos. Aqui só a foto escurece; o vidro dos cards,
+     o glow e a tipografia continuam com a opacidade que sempre tiveram.
+     0.62 mantém a textura perceptível — o webp já traz um scrim de 0.5
+     embutido, então o preto efetivo sobre a imagem crua é maior que o número
+     sugere e passar disso chapava o fundo. */
+  .servicos__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.62);
+    pointer-events: none;
   }
 
   /* Única concessão do mobile: permite alcançar os cards seguintes enquanto o
