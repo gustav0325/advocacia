@@ -89,7 +89,10 @@
       badge:      '.hero-brand__badge-wrap',
       advogado:   '.hero__advogado',
       avaliacao:  '.hero-rating',
-      cta:        '.hero-cta',
+      // Escopado ao Hero de propósito: o CTA de encerramento de Feedbacks
+      // reaproveita a classe `.hero-cta` para herdar o visual e as
+      // microinterações, e não pode entrar na intro de carregamento.
+      cta:        '.hero .hero-cta',
       metricas:   '.hero-metrics__item'
     };
 
@@ -635,6 +638,8 @@
     var divisor = document.querySelector('.feedbacks__divider');
     var subtitulo = document.querySelector('.feedbacks__subtitle');
     var fechamento = document.querySelector('.feedbacks__closing');
+    // Só existe no mobile; no desktop `display: none` deixa a lista vazia.
+    var ctaFinal = document.querySelector('.feedbacks__cta');
     var pista = document.querySelector('.feedbacks__cards');
     var cards = Array.prototype.slice.call(document.querySelectorAll('.feedback-card'));
     if (!secao || !pill || !titulo || !divisor || !subtitulo || !pista || cards.length < 3) return;
@@ -662,6 +667,7 @@
     var dir = porPosicao(POS[2]);
     var alvos = [pill, titulo, divisor, subtitulo, esq, centro, dir];
     if (fechamento) alvos.push(fechamento);
+    if (ctaFinal) alvos.push(ctaFinal);
 
     // Estados iniciais aplicados de uma vez, antes da timeline: um `fromTo`
     // com stagger só renderiza o estado inicial do primeiro alvo, o que
@@ -672,6 +678,8 @@
     gsap.set(dir, { x: lateral, opacity: 0 });
     gsap.set(centro, { y: -queda, opacity: 0 });
     if (fechamento) gsap.set(fechamento, { y: -rodape, opacity: 0 });
+    // O bloco inteiro desce de cima; o CTA sobe, para fechar o movimento.
+    if (ctaFinal) gsap.set(ctaFinal, { y: 18, opacity: 0 });
 
     var revelado = false;
 
@@ -702,6 +710,9 @@
 
     // Etapa C — fechamento inferior.
     if (fechamento) tl.to(fechamento, { y: 0, opacity: 1, duration: 0.6 }, 0.75);
+    // Entra logo atrás do bloco, ainda dentro do mesmo gesto. Como é filho
+    // do fechamento, os dois transforms se compõem e ambos terminam em 0.
+    if (ctaFinal) tl.to(ctaFinal, { y: 0, opacity: 1, duration: 0.65 }, 0.95);
 
     /* 7.2 Carrossel — só onde há espaço; nunca no mobile ----------------- */
 
@@ -946,7 +957,7 @@
 
   function initSmoothNavigation() {
     var links = Array.prototype.slice.call(
-      document.querySelectorAll('.hero-nav a[href^="#"], a.hero-cta[href^="#"], .sobre__cta[href^="#"], .servicos__cta-button[href^="#"]')
+      document.querySelectorAll('.hero-nav a[href^="#"], a.hero-cta[href^="#"], .sobre__cta[href^="#"], .servicos__cta-button[href^="#"], .rodape__link[href^="#"]')
     );
     if (!links.length) return;
 
@@ -1059,7 +1070,40 @@
     zona.addEventListener('pointermove', registrar, { passive: true });
   }
 
-  /* --- 11. Disparo -------------------------------------------------------- */
+  /* --- 11. Reveal do rodapé ------------------------------------------------
+     O rodapé entra como um conjunto só: um bloco de três alvos com stagger
+     curtíssimo, não um texto de cada vez. Mesmo padrão das outras seções —
+     `gsap.set` antes da timeline (e nunca `fromTo` em posição > 0, que
+     reverteria o estado inicial enquanto a playhead não chega) e
+     `clearProps` no fim, para o repouso ficar sem estilo inline.
+     ------------------------------------------------------------------------- */
+
+  function initRodapeReveal() {
+    if (!window.gsap || !window.ScrollTrigger) return;
+
+    var rodape = document.querySelector('.rodape');
+    if (!rodape) return;
+
+    var alvos = ['.rodape__marca', '.rodape__grupos', '.rodape__base']
+      .map(function (s) { return rodape.querySelector(s); })
+      .filter(Boolean);
+    if (!alvos.length) return;
+
+    gsap.set(alvos, { y: 20, opacity: 0 });
+
+    gsap.timeline({
+      defaults: { duration: 0.65, ease: 'power3.out' },
+      scrollTrigger: { trigger: rodape, start: 'top 88%', once: true },
+      onComplete: function () {
+        gsap.set(alvos, { clearProps: 'opacity,transform' });
+        alvos.forEach(function (el) {
+          if (el.getAttribute('style') === '') el.removeAttribute('style');
+        });
+      }
+    }).to(alvos, { y: 0, opacity: 1, stagger: 0.06 }, 0);
+  }
+
+  /* --- 12. Disparo -------------------------------------------------------- */
 
   function iniciar() {
     // Navegação e botão de topo vêm primeiro: precisam funcionar mesmo com
@@ -1088,6 +1132,7 @@
     initServicosAnimation();
     initProcessosReveal();
     initFeedbacksAnimation();
+    initRodapeReveal();
   }
 
   if (document.readyState === 'loading') {

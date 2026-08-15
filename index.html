@@ -496,10 +496,120 @@
           <span class="feedbacks__closing-rule feedbacks__closing-rule--right" aria-hidden="true"></span>
         </div>
         <p class="feedbacks__closing-text">Mais do que defender, entregamos tranquilidade e confian&ccedil;a.</p>
+
+        <!-- CTA de encerramento, só no mobile. Reaproveita o componente do
+             Hero: mesma classe `.hero-cta`, mesmo destino, mesmas medidas e as
+             mesmas microinterações do bloco 23. `.feedbacks__cta` cuida só de
+             onde ele aparece e de quanto respiro tem em volta. -->
+        <a class="hero-cta feedbacks__cta" href="#contato">
+          <span class="hero-cta__label">INICIE O SEU CASO</span>
+          <img class="hero-cta__icon" src="assets/hero/icon-arrow.svg" alt="" aria-hidden="true">
+        </a>
       </div>
 
     </div>
   </section>
+
+  <!-- ==========================================================
+       RODAPÉ
+
+       Duas composições, mesma marcação: no desktop os três grupos
+       (Navegação, Contato, Institucional) ficam lado a lado; abaixo de
+       768px Contato e Institucional saem com `display: none` e sobram
+       assinatura, navegação em 2x2 e copyright. A conversão no mobile já
+       acontece no CTA do fim de Feedbacks, então aqui não entra botão.
+
+       TODO — DADOS REAIS PENDENTES
+       Nada abaixo foi inventado. O projeto ainda não tem telefone, e-mail,
+       link de agendamento, número de OAB, cidade nem páginas de privacidade
+       e termos: todo CTA existente aponta para `#contato`, que não é uma
+       seção do documento. Por isso os itens de Contato e Institucional são
+       <span>, e não <a> com href falso. Ao definir os destinos:
+         1. trocar cada <span class="rodape__item"> por <a class="rodape__item rodape__link">
+            com href="https://wa.me/55XXXXXXXXXXX", "mailto:…" e a URL de agendamento;
+         2. preencher OAB/UF e Cidade — UF;
+         3. transformar Política de Privacidade e Termos de Uso em <a> quando
+            as páginas existirem.
+       ========================================================== -->
+  <footer class="rodape" id="rodape">
+    <span class="rodape__transicao" aria-hidden="true"></span>
+
+    <div class="rodape__inner">
+
+      <div class="rodape__marca">
+        <img class="rodape__assinatura" src="assets/hero/assinatura.svg" alt="Vincent Advocacia">
+        <p class="rodape__marca-label">ADVOCACIA</p>
+      </div>
+
+      <div class="rodape__grupos">
+
+        <nav class="rodape__grupo" aria-label="Navegação do rodapé">
+          <h2 class="rodape__titulo">NAVEGAÇÃO</h2>
+          <ul class="rodape__lista rodape__lista--nav">
+            <li><a class="rodape__link" href="#sobre">Sobre</a></li>
+            <li><a class="rodape__link" href="#servicos">Serviços</a></li>
+            <li><a class="rodape__link" href="#processos">Processos</a></li>
+            <li><a class="rodape__link" href="#feedbacks">Feedbacks</a></li>
+          </ul>
+        </nav>
+
+        <div class="rodape__grupo rodape__grupo--extra">
+          <h2 class="rodape__titulo">CONTATO</h2>
+          <ul class="rodape__lista">
+            <li>
+              <span class="rodape__item">
+                <svg class="rodape__icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <path d="M2.5 13.5 3.4 10.4A5.5 5.5 0 1 1 5.6 12.6l-3.1.9Z"
+                        fill="none" stroke="currentColor" stroke-width="1.2"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                WhatsApp
+              </span>
+            </li>
+            <li>
+              <span class="rodape__item">
+                <svg class="rodape__icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <rect x="1.8" y="3.4" width="12.4" height="9.2" rx="1.6"
+                        fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="m2.4 4.4 5.6 4 5.6-4" fill="none" stroke="currentColor"
+                        stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                E-mail
+              </span>
+            </li>
+            <li>
+              <span class="rodape__item">
+                <svg class="rodape__icone" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                  <rect x="2" y="3.4" width="12" height="10.2" rx="1.6"
+                        fill="none" stroke="currentColor" stroke-width="1.2"/>
+                  <path d="M2 6.6h12M5.4 2.2v2.4M10.6 2.2v2.4" fill="none"
+                        stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                </svg>
+                Agendar atendimento
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="rodape__grupo rodape__grupo--extra">
+          <h2 class="rodape__titulo">INSTITUCIONAL</h2>
+          <ul class="rodape__lista">
+            <li><span class="rodape__item">OAB/UF XXXXX</span></li>
+            <li><span class="rodape__item">Cidade &mdash; UF</span></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <span class="rodape__regua" aria-hidden="true"></span>
+
+      <div class="rodape__base">
+        <p class="rodape__copy">&copy; 2026 Vincent Advocacia.<span class="rodape__copy-quebra"> </span>Todos os direitos reservados.</p>
+        <p class="rodape__legal">Política de Privacidade <span class="rodape__legal-sep" aria-hidden="true">|</span> Termos de Uso</p>
+      </div>
+
+    </div>
+  </footer>
 
   <!-- Voltar ao topo — aparece depois que o Hero é ultrapassado -->
   <button class="ao-topo" type="button" aria-label="Voltar ao topo">

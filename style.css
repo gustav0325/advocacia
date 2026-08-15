@@ -2287,6 +2287,16 @@ dd {
 .feedbacks__closing-rule--left  { left: 0; }
 .feedbacks__closing-rule--right { left: 411px; }
 
+/* CTA de encerramento — existe só no mobile.
+   No desktop a composição inferior é a do Figma (aspa, linhas e frase) e não
+   leva botão; `display: none` tira o elemento do fluxo, então o desktop não
+   enxerga diferença nenhuma. O visual vem inteiro de `.hero-cta`, inclusive
+   as microinterações do bloco 23 — aqui não se redefine cor, raio, fonte nem
+   medida alguma. */
+.feedbacks__cta {
+  display: none;
+}
+
 /* Frase · nó 14:378 */
 .feedbacks__closing-text {
   width: 100%;
@@ -2488,6 +2498,25 @@ dd {
   .feedbacks__closing-text {
     font-size: 15px;
   }
+
+  /* CTA de encerramento. `.feedbacks__closing` já é uma coluna flex com
+     `align-items: center`, então centralizar não custa nada — e como o botão
+     é filho dela, ele entra junto no reveal do bloco inferior. */
+  .feedbacks__cta {
+    display: flex;
+    margin-top: 28px;
+  }
+
+  /* Espaço para o botão flutuante de voltar ao topo. Ele é `position: fixed`
+     a 24px do rodapé e mede 40px, ou seja, ocupa os últimos 64px da viewport.
+     Como Feedbacks é a última seção, no fim da página a base dela coincide
+     com a base da viewport: com os 56px de antes o botão chegava a cobrir o
+     texto de fechamento (medido: seta em 780..820 contra texto terminando em
+     788). 88px deixam o CTA terminar 24px acima da seta, sem que os dois se
+     encostem em nenhum ponto do scroll. */
+  .feedbacks {
+    padding-bottom: 88px;
+  }
 }
 
 
@@ -2509,7 +2538,7 @@ dd {
 .is-hero-intro .hero-brand__badge-wrap,
 .is-hero-intro .hero__advogado,
 .is-hero-intro .hero-rating,
-.is-hero-intro .hero-cta,
+.is-hero-intro .hero .hero-cta,     /* só o do Hero: o de Feedbacks reusa a classe */
 .is-hero-intro .hero-metrics__item {
   opacity: 0;
 }
@@ -3249,4 +3278,333 @@ dd {
 
 .service-card--desc-longa.service-card--active .service-card__desc {
   font-size: 13px;
+}
+
+
+/* ==========================================================================
+   25. RODAPÉ
+
+   Duas composições na mesma marcação. No desktop, assinatura centralizada e
+   três grupos lado a lado separados por fios dourados; abaixo de 768px os
+   grupos Contato e Institucional saem do fluxo e sobram assinatura,
+   navegação em 2x2 e copyright — a conversão no mobile já é o CTA do fim de
+   Feedbacks, então aqui não entra botão nenhum.
+
+   Nenhuma cor, fonte ou asset novo: dourado `--gold`, texto `--white`, as
+   três famílias já carregadas e a mesma `assinatura.svg` do Hero. O fundo é
+   o único token novo — `#070708`, medido na base de Feedbacks (a foto
+   termina em ~rgb(5,5,4)), para a emenda entre as duas não aparecer.
+   ========================================================================== */
+
+:root {
+  --rodape-bg:    #070708;
+  --rodape-texto: #C7C7C7;                  /* links e itens em repouso */
+  --rodape-fraco: rgba(255, 255, 255, 0.42); /* copyright e nota legal */
+  --rodape-fio:   rgba(217, 164, 65, 0.32);  /* divisores verticais */
+}
+
+.rodape {
+  position: relative;
+  background: var(--rodape-bg);
+  color: var(--rodape-texto);
+}
+
+/* Linha de transição: fio dourado de largura total, esmaecendo nas pontas
+   para não terminar em corte seco contra a borda da janela. */
+.rodape__transicao {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg,
+                rgba(217, 164, 65, 0) 0%,
+                var(--gold) 22%,
+                var(--gold) 78%,
+                rgba(217, 164, 65, 0) 100%);
+}
+
+.rodape__inner {
+  width: 100%;
+  max-width: var(--frame-w);      /* mesmo trilho de 1365px do resto do site */
+  margin-inline: auto;
+  padding: 64px 32px 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* 25.1 Assinatura institucional -------------------------------------------
+   O mesmo SVG do Hero, bem menor: lá ele é a marca principal (395px), aqui
+   é assinatura de rodapé. `height: auto` mantém a proporção do arquivo. */
+
+.rodape__marca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rodape__assinatura {
+  width: min(196px, 52vw);
+  height: auto;
+  display: block;
+}
+
+/* "ADVOCACIA" fecha o bloco de marca. Caixa alta espaçada, no cinza claro do
+   rodapé, para não competir com o dourado da assinatura. */
+.rodape__marca-label {
+  margin-top: 2px;
+  font-family: var(--font-poppins);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 6.4px;
+  text-indent: 6.4px;             /* compensa o espaço que sobra à direita */
+  color: var(--rodape-fraco);
+}
+
+
+/* 25.2 Grupos -------------------------------------------------------------- */
+
+.rodape__grupos {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 72px;
+  margin-top: 56px;
+}
+
+/* Fio dourado entre os grupos. Fica no `::before` do próprio grupo, então
+   some junto quando o grupo sai no mobile — não sobra divisor órfão. */
+.rodape__grupo {
+  position: relative;
+  min-width: 148px;
+}
+
+.rodape__grupo + .rodape__grupo::before {
+  content: "";
+  position: absolute;
+  left: -36px;
+  top: 2px;
+  bottom: 2px;
+  width: 1px;
+  background: var(--rodape-fio);
+}
+
+.rodape__titulo {
+  margin-bottom: 20px;
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 1.6px;
+  color: var(--gold);
+}
+
+.rodape__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.rodape__link,
+.rodape__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--rodape-texto);
+}
+
+.rodape__icone {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--gold);
+}
+
+
+/* 25.3 Faixa inferior ------------------------------------------------------ */
+
+.rodape__regua {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-top: 52px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.rodape__base {
+  width: 100%;
+  margin-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.rodape__copy,
+.rodape__legal {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--rodape-fraco);
+}
+
+.rodape__legal-sep {
+  margin-inline: 6px;
+  color: var(--rodape-fio);
+}
+
+
+/* 25.4 Hover e foco — só onde existe mouse de verdade.
+   Mesma linguagem da navbar: a cor caminha para o dourado em 0.25s. O fio
+   que cresce por baixo é um `::after` em `scaleX`, que não ocupa espaço e
+   por isso não desloca nada. */
+
+@media (hover: hover) and (pointer: fine) {
+  .rodape__link {
+    position: relative;
+    transition: color 0.25s ease;
+  }
+
+  .rodape__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.25s ease;
+  }
+
+  .rodape__link:hover {
+    color: var(--gold);
+  }
+
+  .rodape__link:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Toque: sem hover preso, só uma resposta discreta ao dedo. */
+.rodape__link:active {
+  color: var(--gold);
+}
+
+.rodape__link:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rodape__link,
+  .rodape__link::after {
+    transition: none;
+  }
+}
+
+
+/* ==========================================================================
+   26. RODAPÉ — responsivo
+   ========================================================================== */
+
+/* Tablet: os três grupos não cabem lado a lado com folga, então viram uma
+   grade de duas colunas centralizada. Os fios verticais sairiam tortos numa
+   grade de 2x2 e dão lugar ao próprio espaçamento. */
+@media (max-width: 1023px) {
+  .rodape__inner {
+    padding: 56px 32px 64px;
+  }
+
+  .rodape__grupos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 168px));
+    justify-content: center;
+    gap: 36px 64px;
+    margin-top: 48px;
+  }
+
+  .rodape__grupo + .rodape__grupo::before {
+    display: none;
+  }
+}
+
+
+/* Mobile: assinatura, navegação e copyright. Nada mais. */
+@media (max-width: 767px) {
+  .rodape__inner {
+    /* O botão flutuante de voltar ao topo é `fixed` a 24px do rodapé e mede
+       40px: ocupa os últimos 64px da viewport. Como o rodapé fecha a página,
+       no fim do scroll a base dele coincide com a base da janela — sem esta
+       reserva a seta cairia em cima do copyright. */
+    padding: 44px 20px calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .rodape__grupos {
+    display: block;
+    margin-top: 32px;
+  }
+
+  /* Contato e Institucional são exclusivos do desktop. */
+  .rodape__grupo--extra,
+  .rodape__titulo {
+    display: none;
+  }
+
+  /* Navegação em 2 x 2, centralizada. `auto` nas colunas mantém cada link do
+     tamanho do texto e o `justify-content: center` centra o conjunto — numa
+     grade `1fr 1fr` as palavras curtas ficariam descoladas do centro. */
+  .rodape__lista--nav {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    justify-content: center;
+    gap: 14px clamp(28px, 9vw, 44px);
+  }
+
+  .rodape__link {
+    font-size: 15px;
+    padding: 6px 2px;       /* área de toque confortável, sem mexer no fluxo */
+    white-space: nowrap;
+  }
+
+  .rodape__regua {
+    margin-top: 32px;
+  }
+
+  .rodape__base {
+    margin-top: 20px;
+    flex-direction: column;
+    gap: 6px;
+    text-align: center;
+  }
+
+  /* No mobile o copyright quebra em duas linhas, como no desenho pedido. */
+  .rodape__copy-quebra {
+    display: block;
+  }
+
+  /* A nota legal é do desktop: no mobile o rodapé fica só com o copyright. */
+  .rodape__legal {
+    display: none;
+  }
+}
+
+
+@media (max-width: 359px) {
+  .rodape__link {
+    font-size: 14px;
+  }
+
+  .rodape__lista--nav {
+    gap: 12px 24px;
+  }
 }
