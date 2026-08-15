@@ -713,11 +713,18 @@ dd {
     height: 36px;
   }
 
-  /* Composição simplificada: a pill de regulamentação e o card de avaliação
-     saem do fluxo (`display: none`, não `opacity`), e o espaço que ocupavam
-     — 172px medidos em 390 x 844 — vai todo para a figura. */
+  /* Composição simplificada: saem a pill de regulamentação e a coluna
+     `.hero-aside` inteira — ela contém exatamente o card de avaliação e o
+     botão INICIE O SEU CASO, e no mobile nenhum dos dois aparece. Esconder o
+     contêiner em vez dos dois filhos evita deixar um flex item vazio no
+     meio da coluna, que ainda somaria o `gap` do `.hero__inner` dos dois
+     lados. A conversão no mobile fica com o CTA do fim de Feedbacks.
+
+     `display: none`, não `opacity`: sai do fluxo, sai da ordem de tabulação
+     e sai da timeline de entrada — `montarHero()` filtra por
+     `offsetParent !== null`, então não é preciso tocar no script. */
   .hero-brand__badge-wrap,
-  .hero-rating {
+  .hero-aside {
     display: none;
   }
 
