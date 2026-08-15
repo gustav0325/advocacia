@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vincent — Advocacia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300&family=Cormorant+Garamond:wght@600&family=Hedvig+Letters+Serif&family=Inter:wght@100;400;500;600&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- GSAP com `defer`: carrega em paralelo e executa antes do DOMContentLoaded.
+       script.js é bloqueante de propósito — ele decide, antes do primeiro paint,
+       se a intro do Hero vai rodar, evitando um flash do Hero já completo. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js" defer></script>
+  <script src="script.js"></script>
+</head>
+<body>
+
+  <!-- ==========================================================
+       HERO  ·  Figma frame "Hero" (1:2) — 1365 x 615
+       ========================================================== -->
+  <header class="hero">
+
+    <!-- Background · nó 2:76 -->
+    <img class="hero__background" src="assets/hero/background.webp" alt="" aria-hidden="true">
+
+    <div class="hero__inner">
+
+      <!-- Advogado · nó 1:26 -->
+      <img class="hero__advogado" src="assets/hero/advogado.png" alt="Advogado Vincent">
+
+      <!-- ----------------------------------------------------
+           NAVBAR · nó 17:475
+           ---------------------------------------------------- -->
+      <nav class="hero-nav" aria-label="Navegação principal">
+        <ul class="hero-nav__links">
+          <li><a class="hero-nav__link" href="#sobre">Sobre</a></li>
+          <li><a class="hero-nav__link" href="#servicos">Serviços</a></li>
+          <li><a class="hero-nav__link" href="#processos">Processos</a></li>
+          <li><a class="hero-nav__link" href="#feedbacks">Feedbacks</a></li>
+        </ul>
+
+        <a class="hero-nav__contact" href="#contato">
+          <span class="hero-nav__contact-label">CONTATO</span>
+          <img class="hero-nav__contact-icon" src="assets/hero/icon-arrow.svg" alt="" aria-hidden="true">
+        </a>
+      </nav>
+
+      <!-- ----------------------------------------------------
+           BLOCO CENTRAL · nó 17:474
+           ---------------------------------------------------- -->
+      <div class="hero-main">
+
+        <!-- Coluna esquerda · nó 17:473 -->
+        <div class="hero-brand">
+          <div class="hero-brand__badge-wrap">
+            <p class="hero-brand__badge">Regulamentação: XXXXX</p>
+          </div>
+          <img class="hero-brand__signature" src="assets/hero/assinatura.svg" alt="Assinatura Vincent">
+        </div>
+
+        <!-- Coluna direita · nó 4:84 -->
+        <div class="hero-aside">
+
+          <!-- Card de avaliação · nó 3:2 -->
+          <div class="hero-rating">
+            <div class="hero-rating__card"></div>
+
+            <div class="hero-rating__content">
+              <div class="hero-rating__top">
+                <div class="hero-rating__socials">
+                  <img class="hero-rating__social hero-rating__social--google" src="assets/hero/icon-google.svg" alt="Google">
+                  <img class="hero-rating__social" src="assets/hero/icon-facebook.svg" alt="Facebook">
+                </div>
+
+                <div class="hero-rating__stars">
+                  <img src="assets/hero/stars.svg" alt="5 estrelas" aria-hidden="true">
+                </div>
+
+                <p class="hero-rating__score">4.9</p>
+              </div>
+
+              <div class="hero-rating__texts">
+                <p class="hero-rating__reviews">2k+ Reviews</p>
+                <p class="hero-rating__tagline">Estratégia legal para a sua pessoa e o seu negócio.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botão · nó 1:49 -->
+          <a class="hero-cta" href="#contato">
+            <span class="hero-cta__label">INICIE O SEU CASO</span>
+            <img class="hero-cta__icon" src="assets/hero/icon-arrow.svg" alt="" aria-hidden="true">
+          </a>
+
+        </div>
+      </div>
+
+      <!-- ----------------------------------------------------
+           BARRA DE MÉTRICAS · nó 16:450
+           ---------------------------------------------------- -->
+      <div class="hero-metrics">
+        <div class="hero-metrics__glass">
+          <div class="hero-metrics__line"></div>
+
+          <dl class="hero-metrics__list">
+            <div class="hero-metrics__item hero-metrics__item--1">
+              <dt class="hero-metrics__value">25+</dt>
+              <dd class="hero-metrics__label">Anos de experiência</dd>
+            </div>
+            <div class="hero-metrics__item hero-metrics__item--2">
+              <dt class="hero-metrics__value">80%</dt>
+              <dd class="hero-metrics__label">De taxa de sucesso</dd>
+            </div>
+            <div class="hero-metrics__item hero-metrics__item--3">
+              <dt class="hero-metrics__value">300+</dt>
+              <dd class="hero-metrics__label">Casos completados</dd>
+            </div>
+            <div class="hero-metrics__item hero-metrics__item--4">
+              <dt class="hero-metrics__value">100%</dt>
+              <dd class="hero-metrics__label">SRA Regulamentado</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==========================================================
+       SOBRE  ·  Figma frame "Sobre" (3:14) — 1365 x 458
+       Começa 43px atrás da base do Hero (y 572 vs 615 no Figma).
+       ========================================================== -->
+  <section class="sobre" id="sobre">
+    <div class="sobre__inner">
+
+      <!-- Coluna esquerda · nó 5:1373 -->
+      <div class="sobre__intro">
+        <p class="sobre__pill">Sobre mim</p>
+        <h2 class="sobre__title">FUNDAMENTOS NA<br>LEI, GUIADOS PELA<br>VERDADE</h2>
+      </div>
+
+      <!-- Coluna direita · nó 5:1382 -->
+      <div class="sobre__content">
+        <div class="sobre__text">
+          <p class="sobre__lead">Minha missão é proteger seus direitos trabalhistas com estratégias ágeis, transparentes e focadas na resolução do seu problema.</p>
+          <p class="sobre__paragraph">Com sólida experiência nas relações de trabalho, alio conhecimento técnico à execução precisa para guiar você em momentos decisivos com total confiança. Meu método é construído sobre a ética, a discrição e um compromisso inabalável com a justiça que você busca — pois entendo que a sua carreira e o seu sustento merecem a melhor advocacia possível.</p>
+        </div>
+
+        <a class="sobre__cta" href="#contato">
+          <span class="sobre__cta-label">AGENDAR ATENDIMENTO</span>
+          <img class="sobre__cta-icon" src="assets/sobre/icon-arrow.svg" alt="" aria-hidden="true">
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       SERVIÇOS  ·  Figma frame "serviços" (5:1384) — 1365 x 704
+       Adjacente ao Sobre (y 1030), sem sobreposição.
+       O track de cards transborda os 1365px e é recortado pelo
+       viewport — estrutura pronta para a animação horizontal.
+       ========================================================== -->
+  <section class="servicos" id="servicos">
+    <div class="servicos__bg" aria-hidden="true"></div>
+
+    <div class="servicos__inner">
+
+      <!-- Header · nó 7:1465 -->
+      <header class="servicos__header">
+        <div class="servicos__heading">
+          <p class="servicos__pill">Serviços</p>
+          <h2 class="servicos__title">ÁREAS DE ATUAÇÃO<br><span class="servicos__title-accent">FOCADA EM VOCÊ</span></h2>
+        </div>
+        <p class="servicos__subtitle">Soluções jurídicas estratégicas e personalizadas para proteger seus direitos e garantir a justiça que você merece.</p>
+      </header>
+
+      <!-- Track de cards · slots 95 / 432 / 769 / 1106 / 1443 / 1780, gap 62 -->
+      <div class="servicos__viewport">
+        <ul class="servicos__track">
+
+          <li class="service-card service-card--active">
+            <span class="service-card__glow" aria-hidden="true"></span>
+            <span class="service-card__icon">
+              <img src="assets/servicos/icon-direito-trabalhista.svg" alt="" width="60" height="52">
+            </span>
+            <div class="service-card__body">
+              <h3 class="service-card__title">DIREITO TRABALHISTA</h3>
+              <span class="service-card__rule" aria-hidden="true"></span>
+              <p class="service-card__desc">Defesa dos seus direitos nas relações de trabalho, com orientação segura e estratégica.</p>
+            </div>
+            <button class="service-card__more" type="button" aria-expanded="false" aria-label="Ver mais sobre Direito Trabalhista">+</button>
+          </li>
+
+          <li class="service-card">
+            <span class="service-card__glow" aria-hidden="true"></span>
+            <span class="service-card__icon">
+              <img src="assets/servicos/recis%C3%A3o-icon.svg" alt="" width="40" height="42">
+            </span>
+            <div class="service-card__body">
+              <h3 class="service-card__title">RESCISÃO E VERBAS</h3>
+              <span class="service-card__rule" aria-hidden="true"></span>
+              <p class="service-card__desc">Análise da rescisão e das verbas trabalhistas para garantir que seus direitos sejam respeitados.</p>
+            </div>
+            <button class="service-card__more" type="button" aria-expanded="false"
+                    aria-hidden="true" tabindex="-1"
+                    aria-label="Ver mais sobre Rescisão e Verbas">+</button>
+          </li>
+
+          <li class="service-card">
+            <span class="service-card__glow" aria-hidden="true"></span>
+            <span class="service-card__icon">
+              <img src="assets/servicos/horas-icon.svg" alt="" width="40" height="42">
+            </span>
+            <div class="service-card__body">
+              <h3 class="service-card__title">HORAS EXTRA</h3>
+              <span class="service-card__rule" aria-hidden="true"></span>
+              <p class="service-card__desc">Avaliação e reivindicação de horas extras não pagas ou calculadas de forma incorreta.</p>
+            </div>
+            <button class="service-card__more" type="button" aria-expanded="false"
+                    aria-hidden="true" tabindex="-1"
+                    aria-label="Ver mais sobre Horas Extra">+</button>
+          </li>
+
+          <li class="service-card">
+            <span class="service-card__glow" aria-hidden="true"></span>
+            <span class="service-card__icon">
+              <img src="assets/servicos/ass%C3%A9dio-trabalho-icon.svg" alt="" width="40" height="42">
+            </span>
+            <div class="service-card__body">
+              <h3 class="service-card__title">ASSÉDIO NO TRABALHO</h3>
+              <span class="service-card__rule" aria-hidden="true"></span>
+              <p class="service-card__desc">Orientação e defesa em situações de assédio moral ou sexual no ambiente profissional.</p>
+            </div>
+            <button class="service-card__more" type="button" aria-expanded="false"
+                    aria-hidden="true" tabindex="-1"
+                    aria-label="Ver mais sobre Assédio no Trabalho">+</button>
+          </li>
+
+          <li class="service-card service-card--desc-longa">
+            <span class="service-card__glow" aria-hidden="true"></span>
+            <span class="service-card__icon">
+              <img src="assets/servicos/acidente-icon.svg" alt="" width="40" height="42">
+            </span>
+            <div class="service-card__body">
+              <h3 class="service-card__title">ACIDENTE NO TRABALHO</h3>
+              <span class="service-card__rule" aria-hidden="true"></span>
+              <p class="service-card__desc">Suporte jurídico para proteger seus direitos em casos de acidentes e doenças ocupacionais.</p>
+            </div>
+            <button class="service-card__more" type="button" aria-expanded="false"
+                    aria-hidden="true" tabindex="-1"
+                    aria-label="Ver mais sobre Acidente no Trabalho">+</button>
+          </li>
+
+          <li class="service-card service-card--desc-longa">
+            <span class="service-card__glow" aria-hidden="true"></span>
+            <span class="service-card__icon">
+              <img src="assets/servicos/defesa-trabalhador-icon.svg" alt="" width="40" height="42">
+            </span>
+            <div class="service-card__body">
+              <h3 class="service-card__title">DEFESA DO TRABALHADOR</h3>
+              <span class="service-card__rule" aria-hidden="true"></span>
+              <p class="service-card__desc">Atuação estratégica em conflitos trabalhistas, buscando segurança e a melhor solução para o seu caso.</p>
+            </div>
+            <button class="service-card__more" type="button" aria-expanded="false"
+                    aria-hidden="true" tabindex="-1"
+                    aria-label="Ver mais sobre Defesa do Trabalhador">+</button>
+          </li>
+
+          <!-- CTA de encerramento · nós 33:6 / 33:7 / 35:21 — 472 x 378.
+               Fecha a composição da seção. Não é um sétimo serviço: não usa
+               .service-card, não entra na seleção e não tem botão "+". -->
+          <li class="servicos__cta">
+            <span class="servicos__cta-glow" aria-hidden="true"></span>
+
+            <div class="servicos__cta-content">
+              <p class="servicos__cta-eyebrow">PRECISA DE OUTRA SOLUÇÃO?</p>
+              <span class="servicos__cta-rule" aria-hidden="true"></span>
+              <h3 class="servicos__cta-title">Seu caso merece uma análise individual.</h3>
+              <p class="servicos__cta-text">Nem toda situação cabe em uma categoria. Fale diretamente com um especialista e entenda o melhor caminho para o seu caso.</p>
+
+              <a class="servicos__cta-button" href="#contato">
+                <span class="servicos__cta-label">FALAR COM ESPECIALISTA</span>
+                <span class="servicos__cta-arrow" aria-hidden="true">
+                  <img src="assets/servicos/cta-arrow.svg" alt="" width="20" height="19">
+                </span>
+              </a>
+            </div>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       PROCESSOS  ·  Figma frame "Processos" (8:26) — 1365 x 615
+       Composição de 575px centralizada em 100vh no desktop.
+       ========================================================== -->
+  <section class="processos" id="processos">
+    <div class="processos__inner">
+
+      <!-- Introdução · nó 10:64 -->
+      <div class="processos__intro">
+        <p class="processos__pill">Processos</p>
+        <h2 class="processos__title">COMO FUNCIONA O<br>SEU <span class="processos__title-accent">ATENDIMENTO</span></h2>
+        <span class="processos__rule" aria-hidden="true"></span>
+        <p class="processos__subtitle">Um atendimento estruturado para garantir transparência, estratégia e os melhores resultados para o seu caso.</p>
+      </div>
+
+      <!-- Etapas · nó 16:455 -->
+      <div class="processos__flow">
+
+        <!-- Timeline em camada inferior · nó 12:84 -->
+        <div class="processos__timeline" aria-hidden="true">
+          <span class="processos__line"></span>
+          <span class="processos__dot processos__dot--1"></span>
+          <span class="processos__dot processos__dot--2"></span>
+          <span class="processos__dot processos__dot--3"></span>
+        </div>
+
+        <ol class="processos__steps">
+
+          <li class="processo-step">
+            <span class="processo-step__bignum" aria-hidden="true">01</span>
+            <span class="processo-step__circle">
+              <img class="processo-step__icon" src="assets/processos/conversa-icon.svg" alt="" width="79" height="72">
+            </span>
+            <div class="processo-step__body">
+              <p class="processo-step__num">01</p>
+              <h3 class="processo-step__title">Primeiro contato</h3>
+              <span class="processo-step__rule" aria-hidden="true"></span>
+              <p class="processo-step__desc">Você apresenta sua situação, seus objetivos e as principais informações do caso.</p>
+            </div>
+          </li>
+
+          <li class="processo-step processo-step--tight">
+            <span class="processo-step__bignum" aria-hidden="true">02</span>
+            <span class="processo-step__circle">
+              <img class="processo-step__icon" src="assets/processos/analise-icon.svg" alt="" width="81" height="80">
+            </span>
+            <div class="processo-step__body">
+              <p class="processo-step__num">02</p>
+              <h3 class="processo-step__title">Análise do caso</h3>
+              <span class="processo-step__rule" aria-hidden="true"></span>
+              <p class="processo-step__desc">Analisamos documentos, direitos envolvidos e os possíveis caminhos jurídicos para o seu caso.</p>
+            </div>
+          </li>
+
+          <li class="processo-step processo-step--tight processo-step--wide">
+            <span class="processo-step__bignum" aria-hidden="true">03</span>
+            <span class="processo-step__circle">
+              <img class="processo-step__icon" src="assets/processos/estrategia-icon.svg" alt="" width="97" height="86">
+            </span>
+            <div class="processo-step__body">
+              <p class="processo-step__num">03</p>
+              <h3 class="processo-step__title">Estratégia e ação</h3>
+              <span class="processo-step__rule" aria-hidden="true"></span>
+              <p class="processo-step__desc">Definimos a estratégia mais adequada e iniciamos as medidas necessárias para defender seus direitos.</p>
+            </div>
+          </li>
+
+          <li class="processo-step">
+            <span class="processo-step__bignum" aria-hidden="true">04</span>
+            <span class="processo-step__circle">
+              <img class="processo-step__icon" src="assets/processos/acompanhamento-icon.svg" alt="" width="65" height="70">
+            </span>
+            <div class="processo-step__body">
+              <p class="processo-step__num">04</p>
+              <h3 class="processo-step__title">Acompanhamento</h3>
+              <span class="processo-step__rule" aria-hidden="true"></span>
+              <p class="processo-step__desc">Você acompanha cada etapa com clareza e recebe atualizações até a conclusão do caso.</p>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       FEEDBACKS  ·  Figma frame "Feedbacks" (12:122) — 1365 x 704
+       Pilha de 3 cards: os laterais alinhados pela base com o
+       central, que cresce para cima e fica em destaque.
+       ========================================================== -->
+  <section class="feedbacks" id="feedbacks">
+    <div class="feedbacks__bg" aria-hidden="true"></div>
+
+    <!-- Formas reutilizadas pelos cards (geometria exata dos nós do Figma) -->
+    <svg class="feedbacks__defs" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="fb-star" viewBox="0 0 30 30">
+          <path d="M14.5245 1.46353C14.6741 1.00287 15.3259 1.00287 15.4755 1.46353L18.2555 10.0193C18.3224 10.2253 18.5144 10.3647 18.731 10.3647H27.727C28.2114 10.3647 28.4128 10.9846 28.0209 11.2693L20.743 16.557C20.5677 16.6843 20.4944 16.91 20.5613 17.116L23.3413 25.6717C23.4909 26.1324 22.9637 26.5154 22.5718 26.2307L15.2939 20.943C15.1186 20.8157 14.8814 20.8157 14.7061 20.943L7.42817 26.2307C7.03631 26.5154 6.50907 26.1324 6.65875 25.6717L9.43867 17.116C9.50561 16.91 9.43228 16.6843 9.25704 16.557L1.9791 11.2693C1.58725 10.9846 1.78863 10.3647 2.27299 10.3647H11.269C11.4856 10.3647 11.6776 10.2253 11.7445 10.0193L14.5245 1.46353Z"/>
+        </symbol>
+        <symbol id="fb-check" viewBox="0 0 11 11">
+          <circle cx="5.5" cy="5.5" r="5.5" fill="#D9A441"/>
+          <path d="M3.3535 4.6464 5.3535 6.6464M4.6464 6.6464 7.6464 3.6464" stroke="#FFFFFF" fill="none"/>
+        </symbol>
+      </defs>
+    </svg>
+
+    <div class="feedbacks__inner">
+
+      <!-- Header · nó 14:208 -->
+      <header class="feedbacks__header">
+        <div class="feedbacks__heading">
+          <p class="feedbacks__pill">Feedbacks</p>
+          <h2 class="feedbacks__title">RESULTADOS QUE<br>GERAM <span class="feedbacks__title-accent">CONFIAN&Ccedil;A</span></h2>
+        </div>
+        <span class="feedbacks__divider" aria-hidden="true"></span>
+        <p class="feedbacks__subtitle">A confian&ccedil;a dos nossos clientes &eacute; reflexo do compromisso, da transpar&ecirc;ncia e da dedica&ccedil;&atilde;o em cada defesa. Veja o que dizem sobre o trabalho do Dr. Vincent.</p>
+      </header>
+
+      <!-- Cards · nó 14:370 -->
+      <div class="feedbacks__cards">
+          <article class="feedback-card feedback-card--left">
+            <span class="feedback-card__quote" aria-hidden="true">&ldquo;</span>
+
+            <div class="feedback-card__stars" role="img" aria-label="5 de 5 estrelas">
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+            </div>
+
+            <p class="feedback-card__text">Profissional excepcional. Me orientou em cada etapa do processo, sempre com clareza e aten&ccedil;&atilde;o aos detalhes. Sua atua&ccedil;&atilde;o foi fundamental durante todo o caso.</p>
+
+            <div class="feedback-card__client">
+              <span class="feedback-card__avatar" aria-hidden="true">R.C</span>
+              <div class="feedback-card__identity">
+                <p class="feedback-card__name">R.C</p>
+                <p class="feedback-card__verified">Cliente verificado</p>
+              </div>
+              <svg class="feedback-card__check" viewBox="0 0 11 11" aria-hidden="true"><use href="#fb-check"/></svg>
+            </div>
+          </article>
+          <article class="feedback-card feedback-card--center is-active">
+            <span class="feedback-card__quote" aria-hidden="true">&ldquo;</span>
+
+            <div class="feedback-card__stars" role="img" aria-label="5 de 5 estrelas">
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+            </div>
+
+            <p class="feedback-card__text">O Dr. Vincent demonstrou muita compet&ecirc;ncia e dedica&ccedil;&atilde;o. Explicou cada etapa com clareza e me trouxe seguran&ccedil;a em um momento muito dif&iacute;cil.</p>
+
+            <div class="feedback-card__client">
+              <span class="feedback-card__avatar" aria-hidden="true">A.F</span>
+              <div class="feedback-card__identity">
+                <p class="feedback-card__name">A.F</p>
+                <p class="feedback-card__verified">Cliente verificado</p>
+              </div>
+              <svg class="feedback-card__check" viewBox="0 0 11 11" aria-hidden="true"><use href="#fb-check"/></svg>
+            </div>
+          </article>
+          <article class="feedback-card feedback-card--right">
+            <span class="feedback-card__quote" aria-hidden="true">&ldquo;</span>
+
+            <div class="feedback-card__stars" role="img" aria-label="5 de 5 estrelas">
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+              <svg class="feedback-card__star" viewBox="0 0 30 30" aria-hidden="true"><use href="#fb-star"/></svg>
+            </div>
+
+            <p class="feedback-card__text">Atendimento humano, estrat&eacute;gia precisa e muita transpar&ecirc;ncia durante todo o processo. Sempre esteve dispon&iacute;vel para esclarecer minhas d&uacute;vidas. Recomendo.</p>
+
+            <div class="feedback-card__client">
+              <span class="feedback-card__avatar" aria-hidden="true">M.S</span>
+              <div class="feedback-card__identity">
+                <p class="feedback-card__name">M.S</p>
+                <p class="feedback-card__verified">Cliente verificado</p>
+              </div>
+              <svg class="feedback-card__check" viewBox="0 0 11 11" aria-hidden="true"><use href="#fb-check"/></svg>
+            </div>
+          </article>
+      </div>
+
+      <!-- Composição inferior · nó 14:379 -->
+      <div class="feedbacks__closing">
+        <div class="feedbacks__closing-mark">
+          <span class="feedbacks__closing-rule feedbacks__closing-rule--left" aria-hidden="true"></span>
+          <span class="feedbacks__quote" aria-hidden="true">&ldquo;</span>
+          <span class="feedbacks__closing-rule feedbacks__closing-rule--right" aria-hidden="true"></span>
+        </div>
+        <p class="feedbacks__closing-text">Mais do que defender, entregamos tranquilidade e confian&ccedil;a.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Voltar ao topo — aparece depois que o Hero é ultrapassado -->
+  <button class="ao-topo" type="button" aria-label="Voltar ao topo">
+    <svg class="ao-topo__seta" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M8 13.5V3M8 3 3.5 7.5M8 3l4.5 4.5" fill="none" stroke="currentColor"
+            stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+</body>
+</html>

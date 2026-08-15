@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__plugin_figma_figma__download_assets",
+      "Bash(curl -sL -o icon-arrow.svg \"https://www.figma.com/api/mcp/asset/eb7d962e-74ce-401b-bb4e-0bc379cae98b.svg\")",
+      "Bash(curl -sL -o stars.svg \"https://www.figma.com/api/mcp/asset/9e5f02ba-171b-40dc-8140-e3f100f3026e.svg\")",
+      "mcp__plugin_figma_figma__get_screenshot",
+      "Bash(curl -sL -o figma_ref.png \"https://www.figma.com/api/mcp/asset/161a2733-53e9-4791-b886-8c01fbf72fad.png\")",
+      "Bash(google-chrome --headless --disable-gpu --no-sandbox --hide-scrollbars --window-size=1365,702 --screenshot=impl.png --virtual-time-budget=9000 http://localhost:8777/index.html)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3)",
+      "Bash(curl -sL -o card_rect.svg \"https://www.figma.com/api/mcp/asset/405e3eec-b5d4-44d0-b8f3-6830c0a727fa.svg\")",
+      "Bash(curl -sL -o nav_pill.svg \"https://www.figma.com/api/mcp/asset/5e4bfd9d-d687-4f85-9d91-7a933d1b97a3.svg\")"
+    ]
+  }
+}

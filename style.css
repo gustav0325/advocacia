@@ -1,0 +1,3179 @@
+/* ==========================================================================
+   HERO — reprodução do frame Figma "Hero" (1:2) · 1365 x 615
+   Todos os valores foram extraídos via Figma MCP.
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   1. RESET + TOKENS
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Cores */
+  --gold:          #D9A441;   /* botões CONTATO e INICIE O SEU CASO */
+  --ink:           #FFFFFF;   /* fundo da página */
+  --hero-fill:     #040034;   /* fill do frame Hero (nó 1:2), atrás do background */
+  --white:         #FFFFFF;
+  --muted:         #8E8787;   /* textos do card de avaliação (3:11) */
+  --metric-label:  #979797;   /* labels das métricas (2:62 …) */
+
+  /* Seção Sobre · nó 3:14 */
+  --sobre-bg:      #FFFFFF;
+  --sobre-pill:    #B2B2B2;   /* borda e texto do pill (5:1367 / 5:1366) */
+  --sobre-text:    #000000;   /* título 5:1365 e texto principal 5:1370 */
+  --sobre-muted:   #8B8B8B;   /* parágrafo 5:1371 */
+
+  /* Seção Serviços · nó 5:1384
+     (o scrim rgba(0,0,0,.5) do nó 8:24 já vem embutido no webp exportado) */
+  --card-glass:     rgba(217, 217, 217, 0.2);  /* fundo dos cards (7:1466) */
+  --card-icon-bg:   rgba(217, 217, 217, 0.17); /* círculo do ícone (16:423) */
+  --glow:           #E6C700;                   /* glow do card ativo (8:20) */
+
+  /* Seção Processos · nó 8:26 */
+  --circle-border:  #8D8D8D;                   /* borda dos círculos (10:65) */
+  --bignum:         rgba(217, 217, 217, 0.8);  /* números decorativos (12:69) */
+
+  /* Seção Feedbacks · nó 12:122
+     (o scrim rgba(0,0,0,.5) do nó 12:186 já vem embutido no webp exportado) */
+  --card-inner-border: rgba(0, 0, 0, 0.25);    /* retângulo interno (14:231) */
+  --verified-text:     #4B4B4B;                /* "Cliente verificado" (14:222) */
+  --quote-soft:        rgba(217, 164, 65, 0.5);   /* aspas dos cards (14:218) */
+  --closing-text:      rgba(217, 164, 65, 0.76); /* frase final (14:378) */
+
+  /* Transição Hero → Sobre.
+     O Figma sobrepõe as seções em 43px para um raio de 50px (43/50 = 0.86).
+     Derivar a sobreposição do raio mantém o mesmo efeito visual onde o raio muda. */
+  --hero-radius:   50px;
+  --hero-overlap:  calc(var(--hero-radius) * 0.86);
+
+  /* Superfícies de vidro (tint puro — o Figma não aplica blur aqui) */
+  --glass-nav:     rgba(255, 255, 255, 0.10);   /* 1:25 e 1:29 */
+  --glass-card:    rgba(217, 217, 217, 0.20);   /* 1:38 */
+  --glass-bar:     rgba(255, 255, 255, 0.01);   /* 16:449 */
+  --hairline:      rgba(255, 255, 255, 0.25);   /* 2:74 */
+
+  /* Métricas do frame */
+  --frame-w:       1365px;
+  --frame-h:        615px;
+
+  /* Fontes */
+  --font-inter:    "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-poppins:  "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-cormorant: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-cormorant-light: "Cormorant", Georgia, "Times New Roman", serif;
+  --font-hedvig:    "Hedvig Letters Serif", Georgia, "Times New Roman", serif;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. BASE
+   -------------------------------------------------------------------------- */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--ink);
+  font-family: var(--font-inter);
+  color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  display: block;
+  border: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+dd {
+  margin: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. HERO — shell · nó 1:2
+   -------------------------------------------------------------------------- */
+
+.hero {
+  position: relative;
+  display: flex;
+  justify-content: center;      /* mantém o Hero centralizado na viewport */
+  min-height: 100vh;
+  background: var(--hero-fill);
+  border-radius: 0 0 var(--hero-radius) var(--hero-radius);
+  overflow: hidden;             /* clip do frame — corta o glow das estrelas */
+}
+
+.hero__inner {
+  position: relative;
+  width: 100%;
+  max-width: var(--frame-w);
+  min-height: 100vh;
+}
+
+/* Background · nó 2:76 — 1365 x 618 em y = -1 */
+.hero__background {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: calc(100% + 3px);
+  object-fit: cover;
+  object-position: center;
+  z-index: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. ADVOGADO · nó 1:26 — 417 x 552, top 63, centralizado
+   552/615 = 89.7561%  ·  63/615 = 10.2439%
+   Escala proporcional: em 615px de altura reproduz o Figma pixel a pixel.
+   -------------------------------------------------------------------------- */
+
+.hero__advogado {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 89.7561%;
+  width: auto;
+  z-index: 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. NAVBAR · nó 17:475 — 970 x 57, left 359 / top 19 (36px da direita)
+   -------------------------------------------------------------------------- */
+
+.hero-nav {
+  position: absolute;
+  top: 19px;
+  right: 36px;
+  display: flex;
+  align-items: center;
+  gap: 202px;
+  z-index: 2;
+}
+
+/* Pill de links · nó 1:25 — 578 x 49
+   Largura fixa: o nó Figma mede 578px (o texto "Sobre " tem espaço final).
+   Sem isso o pill fica ~2px estreito e desloca os links, pois é ancorado à direita. */
+.hero-nav__links {
+  display: flex;
+  align-items: center;
+  width: 578px;
+  gap: 77px;
+  padding: 15px 35px;
+  line-height: 1.1875;   /* no <ul>, para os <li> herdarem e a pill ficar 49px */
+  background: var(--glass-nav);
+  border-radius: 15px;
+  white-space: nowrap;
+}
+
+.hero-nav__link {
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.1875;   /* nós 1:19–1:22 têm 19px de altura (19/16) */
+  color: var(--white);
+}
+
+/* Botão CONTATO · nó 1:24 — 190 x 57
+   Largura fixa: "CONTATO" renderiza ~6.8px mais estreito que no Figma e, como a
+   navbar é ancorada à direita, isso deslocaria o bloco inteiro. `space-between`
+   coloca o texto em x=25 e a seta terminando a 3px da borda, como no Figma. */
+.hero-nav__contact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 190px;
+  gap: 10px;
+  padding: 3px 3px 3px 25px;
+  background: var(--gold);
+  border-radius: 25px;
+  white-space: nowrap;
+}
+
+.hero-nav__contact-label {
+  font-family: var(--font-poppins);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.5;      /* nó 1:23 tem 30px de altura (30/20) */
+  color: var(--white);
+}
+
+.hero-nav__contact-icon {
+  width: 51px;
+  height: 51px;
+  flex-shrink: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. BLOCO CENTRAL · nó 17:474 — 1313 x 217, centralizado nos dois eixos
+   -------------------------------------------------------------------------- */
+
+.hero-main {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  width: calc(100% - 52px);       /* 26px de margem de cada lado */
+  max-width: 1313px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 3;
+}
+
+
+/* 6.1 Coluna esquerda — regulamentação + assinatura · nó 17:473 */
+
+.hero-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 506px;
+  flex-shrink: 0;
+}
+
+/* Wrapper · nó 4:85 — 185 x 55 */
+.hero-brand__badge-wrap {
+  width: 185px;
+  padding: 10px;
+}
+
+/* Pill · nó 1:29 — 165 x 35 */
+.hero-brand__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;  /* texto em x=46, como o nó 1:28 */
+  width: 165px;
+  padding: 10px;
+  background: var(--glass-nav);
+  border-radius: 15px;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;     /* nó 1:28 tem 15px de altura (15/12) */
+  letter-spacing: 0.24px;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+/* Assinatura · nó 16:471 — 395 x 162 (opacity 0.8 já embutida no SVG) */
+.hero-brand__signature {
+  width: 395px;
+  height: 162px;
+}
+
+
+/* 6.2 Coluna direita — card + CTA · nó 4:84 */
+
+.hero-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  width: 207px;
+  flex-shrink: 0;
+}
+
+
+/* 6.3 Card de avaliação · nó 3:2 — 207 x 101 */
+
+.hero-rating {
+  position: relative;
+  width: 207px;
+  height: 101px;
+}
+
+/* Fundo · nó 1:38 — tint puro, sem blur e sem border (conforme o Figma) */
+.hero-rating__card {
+  position: absolute;
+  inset: 0;
+  background: var(--glass-card);
+  border-radius: 15px;
+}
+
+/* Conteúdo · nó 4:82 — absoluto em left 15 / top 12 */
+.hero-rating__content {
+  position: absolute;
+  left: 15px;
+  top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Linha superior · nó 3:10 — 177 x 24 */
+.hero-rating__top {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 177px;
+}
+
+/* Ícones sociais · nó 3:9 — 38px (22 + 22 com -6 de sobreposição) */
+.hero-rating__socials {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.hero-rating__social {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.hero-rating__social--google {
+  margin-right: -6px;   /* o Facebook sobrepõe o Google */
+}
+
+/* Estrelas · nó 1:47 — caixa de 100 x 20; o SVG traz o glow embutido
+   e sangra 248.47px na horizontal / 248.88px na vertical. */
+.hero-rating__stars {
+  position: relative;
+  width: 100px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.hero-rating__stars img {
+  position: absolute;
+  left: -248.47px;
+  top: -248.88px;
+  width: 596.945px;
+  height: 516.165px;
+  max-width: none;
+}
+
+/* Nota · nó 1:35 */
+.hero-rating__score {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 1.2;      /* nó 1:35 tem 24px de altura (24/20) */
+  letter-spacing: 0.4px;
+  color: var(--white);
+  white-space: nowrap;
+}
+
+/* Textos · nó 3:11 — 157 de largura */
+.hero-rating__texts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  width: 157px;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;     /* nós 1:36 (15px) e 1:37 (2 linhas = 30px) */
+  letter-spacing: 0.24px;
+  color: var(--muted);
+}
+
+.hero-rating__reviews {
+  width: 100%;
+  text-align: center;
+}
+
+.hero-rating__tagline {
+  width: 100%;
+}
+
+
+/* 6.4 Botão INICIE O SEU CASO · nó 1:49 — 161 x 30 */
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 161px;
+  padding: 2px 2px 2px 10px;   /* sem gap: com 161px fixos o gap causaria overflow */
+  background: var(--gold);
+  border-radius: 15px;
+  white-space: nowrap;
+}
+
+.hero-cta__label {
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.5;      /* nó 1:48 tem 18px de altura (18/12) */
+  letter-spacing: 0.24px;
+  color: var(--white);
+}
+
+.hero-cta__icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. BARRA DE MÉTRICAS · nó 16:450 — 1365 x 97, ancorada no rodapé
+   -------------------------------------------------------------------------- */
+
+.hero-metrics {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+}
+
+/* Vidro · nó 16:449 — full-bleed, conteúdo contido nos 1365px centralizados */
+.hero-metrics__glass {
+  position: relative;
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 52px 22px;   /* mantém os grupos em pixels inteiros (52 = nó 2:73) */
+  background: var(--glass-bar);
+  -webkit-backdrop-filter: blur(5.85px);
+  backdrop-filter: blur(5.85px);
+}
+
+/* Linha · nó 2:74 — 1298px a partir de left 32 (35px à direita).
+   O Figma posiciona o wrapper do traço em inset-[-1px 0 0 0] → 1px acima da barra. */
+.hero-metrics__line {
+  position: absolute;
+  top: -1px;
+  left: 32px;
+  right: 35px;
+  height: 1px;
+  background: var(--hairline);
+}
+
+/* Linha de métricas · nó 2:73 — 1262 x 61 */
+.hero-metrics__list {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1262px;
+  margin-inline: auto;
+}
+
+/* Cada grupo sobrepõe número e label na mesma célula, com os offsets do Figma.
+   As larguras ficam intrínsecas de propósito: com `space-between` sobre os
+   1262px do nó 2:73 isso reproduz as posições do Figma dentro de 1px — travar
+   as larguras dos nós (126/121/126/127) força gaps fracionários e piora. */
+.hero-metrics__item {
+  display: grid;
+  grid-template-columns: max-content;
+  grid-template-rows: max-content;
+  justify-items: start;
+  align-items: start;
+  white-space: nowrap;
+}
+
+.hero-metrics__value {
+  grid-area: 1 / 1;
+  margin-left: 41px;
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 1.5;      /* nós 2:61… têm 48px de altura (48/32) */
+  letter-spacing: -1.6px;
+  color: var(--white);
+}
+
+/* nó 2:61 — o único com tracking próprio */
+.hero-metrics__item--1 .hero-metrics__value {
+  letter-spacing: -2.88px;
+}
+
+.hero-metrics__label {
+  grid-area: 1 / 1;
+  margin-top: 43px;
+  font-family: var(--font-poppins);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.5;      /* nós 2:62… têm 18px de altura (18/12) */
+  letter-spacing: 0.24px;
+  color: var(--metric-label);
+}
+
+
+/* ==========================================================================
+   8. RESPONSIVO
+   ========================================================================== */
+
+/* 8.1 Notebook — comprime os espaçamentos da navbar ------------------------ */
+
+@media (max-width: 1364px) {
+  .hero-nav {
+    gap: 120px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .hero-nav {
+    gap: 48px;
+  }
+
+  .hero-nav__links {
+    width: auto;
+    gap: 48px;
+    padding: 15px 28px;
+  }
+
+  .hero__advogado {
+    max-width: 46vw;
+  }
+}
+
+@media (max-width: 1099px) {
+  .hero-nav {
+    gap: 28px;
+  }
+
+  .hero-nav__links {
+    gap: 32px;
+    padding: 13px 22px;
+    font-size: 15px;
+  }
+
+  .hero-nav__contact {
+    width: auto;
+    justify-content: center;
+    padding: 3px 3px 3px 18px;
+  }
+
+  .hero-nav__contact-label {
+    font-size: 17px;
+  }
+
+  .hero-nav__contact-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .hero-metrics__glass {
+    padding: 14px 32px 22px;
+  }
+
+  .hero-metrics__line {
+    left: 20px;
+    right: 22px;
+  }
+}
+
+
+/* 8.2 Tablet — empilha, preservando a hierarquia do Figma ------------------ */
+/* regulamentação → Vincent → advogado → card → botão → métricas             */
+
+@media (max-width: 1023px) {
+  /* O conteúdo empilha na faixa superior; o `padding-bottom` reserva a faixa
+     inferior para o advogado, que continua ancorado à base do Hero — a base do
+     PNG é o rodapé do frame, então ela nunca pode "flutuar" no meio da página. */
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 26px;
+    padding: 19px 26px min(48vh, 552px);
+  }
+
+  /* `display: contents` promove .hero-brand e .hero-aside a filhos diretos */
+  .hero-main {
+    display: contents;
+  }
+
+  .hero-nav {
+    position: static;
+    order: 1;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .hero-nav__links {
+    width: auto;
+  }
+
+  .hero-brand {
+    order: 2;
+    align-items: center;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .hero-brand__badge-wrap {
+    width: auto;
+    padding: 0;
+  }
+
+  .hero-brand__signature {
+    width: min(395px, 74vw);
+    height: auto;
+    margin-top: 10px;
+  }
+
+  .hero-aside {
+    order: 3;
+    align-items: center;
+  }
+
+  /* Mantém position/bottom/left/transform da regra base — só a escala muda */
+  .hero__advogado {
+    height: min(48vh, 552px);
+    width: auto;
+    max-width: 86vw;
+  }
+}
+
+
+/* 8.3 Mobile -------------------------------------------------------------- */
+
+@media (max-width: 767px) {
+  /* Raio menor no mobile — a sobreposição do Sobre acompanha via --hero-overlap */
+  :root {
+    --hero-radius: 32px;
+  }
+
+  .hero__inner {
+    gap: 22px;
+    padding: 16px 16px min(44vh, 552px);
+  }
+
+  .hero-nav {
+    gap: 14px;
+  }
+
+  .hero-nav__links {
+    gap: 18px;
+    padding: 11px 16px;
+    border-radius: 14px;
+  }
+
+  .hero-nav__link {
+    font-size: 13px;
+  }
+
+  .hero-nav__contact {
+    padding: 3px 3px 3px 16px;
+    gap: 8px;
+  }
+
+  .hero-nav__contact-label {
+    font-size: 15px;
+  }
+
+  .hero-nav__contact-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .hero-brand__signature {
+    width: min(320px, 82vw);
+  }
+
+  .hero__advogado {
+    height: min(44vh, 552px);
+    max-width: 92vw;
+  }
+
+  /* Métricas em grade 2 x 2 */
+  .hero-metrics__glass {
+    padding: 18px 20px 22px;
+  }
+
+  .hero-metrics__line {
+    left: 16px;
+    right: 16px;
+  }
+
+  .hero-metrics__list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 12px;
+    max-width: none;
+  }
+
+  .hero-metrics__item {
+    justify-items: center;
+  }
+
+  .hero-metrics__value,
+  .hero-metrics__label {
+    margin-left: 0;
+  }
+
+  .hero-metrics__value {
+    font-size: 26px;
+    letter-spacing: -1.3px;
+  }
+
+  .hero-metrics__item--1 .hero-metrics__value {
+    letter-spacing: -2.34px;
+  }
+
+  .hero-metrics__label {
+    margin-top: 36px;
+  }
+}
+
+
+/* 8.4 Mobile estreito ----------------------------------------------------- */
+
+@media (max-width: 419px) {
+  /* A navbar quebra em duas linhas aqui — encolhe a faixa da figura
+     para a barra de métricas continuar acima da dobra em telas curtas. */
+  .hero__inner {
+    gap: 18px;
+    padding-bottom: min(38vh, 552px);
+  }
+
+  .hero__advogado {
+    height: min(38vh, 552px);
+  }
+
+  .hero-nav__links {
+    gap: 12px;
+    padding: 10px 12px;
+  }
+
+  .hero-nav__link {
+    font-size: 12px;
+  }
+
+  .hero-rating,
+  .hero-rating__card {
+    width: 100%;
+    max-width: 207px;
+  }
+
+  .hero-metrics__value {
+    font-size: 22px;
+    letter-spacing: -1.1px;
+  }
+
+  .hero-metrics__item--1 .hero-metrics__value {
+    letter-spacing: -1.98px;
+  }
+
+  .hero-metrics__label {
+    margin-top: 31px;
+    font-size: 11px;
+  }
+}
+
+
+/* ==========================================================================
+   9. SOBRE — reprodução do frame Figma "Sobre" (3:14) · 1365 x 458
+   ========================================================================== */
+
+/* Transição Hero → Sobre · nó 3:14 começa em y=572, o Hero termina em y=615.
+   O `margin-top` negativo puxa o branco para trás dos cantos arredondados do
+   Hero; o `padding-top` devolve a folga de 44px entre a base do Hero e o
+   conteúdo (659 − 615 no Figma), mantendo-a constante quando o raio muda.
+
+   O Sobre fica deliberadamente `position: static`: na ordem de pintura do CSS,
+   o fundo de um bloco estático é desenhado antes de um elemento posicionado, e
+   o `.hero` já é `position: relative`. Assim o Hero fica por cima sem precisar
+   de `z-index` — que criaria um stacking context nele e trocaria o antialiasing
+   de subpixel para grayscale nos textos sobre vidro. */
+.sobre {
+  margin-top: calc(var(--hero-overlap) * -1);
+  padding-top: calc(var(--hero-overlap) + 44px);
+  padding-bottom: 75px;
+  background: var(--sobre-bg);
+  color: var(--sobre-text);
+}
+
+/* Container · nó 5:1383 — 1239 x 296 em left 94 (94 esq / 32 dir no frame) */
+.sobre__inner {
+  width: 100%;
+  max-width: var(--frame-w);
+  margin-inline: auto;
+  padding-left: 94px;
+  padding-right: 32px;
+  display: flex;
+  align-items: center;
+  gap: 276px;
+}
+
+
+/* 9.1 Coluna esquerda — pill + título · nó 5:1373 (338 x 189) */
+
+.sobre__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 338px;
+  flex-shrink: 0;
+}
+
+/* Pill · nó 5:1367 — 83 x 27 */
+.sobre__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border: 1px solid var(--sobre-pill);
+  border-radius: 15px;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;          /* nó 5:1366 tem 15px de altura (15/12) */
+  color: var(--sobre-pill);
+  white-space: nowrap;
+}
+
+/* Título · nó 5:1365 — 338 x 162 (3 linhas de 54px) */
+.sobre__title {
+  width: 338px;
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.5;           /* 162 / 3 linhas = 54px */
+  color: var(--sobre-text);
+}
+
+
+/* 9.2 Coluna direita — textos + CTA · nó 5:1382 (625 x 296) */
+
+.sobre__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 33px;
+  width: 625px;
+  flex-shrink: 0;
+}
+
+/* Bloco de texto · nó 5:1372 — gap 17 */
+.sobre__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 17px;
+  width: 100%;
+}
+
+/* Texto principal · nó 5:1370 — 625 x 72 (3 linhas de 24px) */
+.sobre__lead {
+  width: 100%;
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--sobre-text);
+}
+
+/* Parágrafo · nó 5:1371 — 625 x 132 (6 linhas de 22px) */
+.sobre__paragraph {
+  width: 100%;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.2222;        /* 132 / 6 linhas = 22px */
+  color: var(--sobre-muted);
+}
+
+/* Botão · nó 5:1375 — 315 x 42
+   Largura fixa + space-between: o Poppins do Google Fonts renderiza mais
+   estreito que o do Figma; assim o texto começa em x=10 e a seta termina a 2px. */
+.sobre__cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 315px;
+  padding: 2px 2px 2px 10px;
+  background: var(--gold);
+  border-radius: 15px;
+  white-space: nowrap;
+}
+
+.sobre__cta-label {
+  font-family: var(--font-poppins);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 1.5;           /* nó 5:1376 tem 30px de altura (30/20) */
+  letter-spacing: 0.4px;
+  color: var(--white);
+}
+
+.sobre__cta-icon {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+}
+
+
+/* ==========================================================================
+   10. SOBRE — responsivo
+   ========================================================================== */
+
+@media (max-width: 1364px) {
+  .sobre__inner {
+    padding-left: 7vw;
+    padding-right: 2.5vw;
+    gap: 8vw;
+  }
+}
+
+@media (max-width: 1199px) {
+  .sobre__inner {
+    gap: 56px;
+  }
+
+  .sobre__content {
+    width: auto;
+    flex: 1 1 auto;
+    max-width: 625px;
+  }
+}
+
+/* Coluna única */
+@media (max-width: 900px) {
+  .sobre__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+
+  .sobre__intro,
+  .sobre__content {
+    width: 100%;
+    max-width: 625px;
+    flex-shrink: 1;
+  }
+
+  .sobre__title {
+    width: auto;
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sobre {
+    padding-bottom: 48px;
+  }
+
+  .sobre__inner {
+    gap: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .sobre__title {
+    font-size: 30px;
+  }
+
+  .sobre__lead {
+    font-size: 18px;
+  }
+
+  .sobre__paragraph {
+    font-size: 16px;
+  }
+
+  .sobre__cta {
+    width: 100%;
+    max-width: 315px;
+  }
+}
+
+@media (max-width: 419px) {
+  .sobre__title {
+    font-size: 26px;    /* mantém "LEI, GUIADOS PELA" numa linha só */
+  }
+
+  .sobre__cta-label {
+    font-size: 17px;
+  }
+
+  .sobre__cta-icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+
+/* ==========================================================================
+   11. SERVIÇOS — reprodução do frame Figma "serviços" (5:1384) · 1365 x 704
+   ========================================================================== */
+
+/* Adjacente ao Sobre (y 1030 no Figma): sem sobreposição e sem folga. */
+.servicos {
+  position: relative;
+  height: 704px;
+  overflow: hidden;
+  color: var(--white);
+}
+
+/* Background · nó 8:25 — o webp exportado (1365x704) já traz o recorte E o
+   scrim rgba(0,0,0,.5) do nó 8:24 embutidos; aplicar o scrim de novo escureceria
+   a seção pela metade. Verificado comparando os pixels crus com o render do Figma. */
+.servicos__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/servicos/background-servicos.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.servicos__inner {
+  position: relative;
+  width: 100%;
+  max-width: var(--frame-w);
+  height: 100%;
+  margin-inline: auto;
+}
+
+
+/* 11.1 Header · nó 7:1465 — 414 x 202 em x=32 / y=16 */
+
+.servicos__header {
+  position: absolute;
+  left: 32px;
+  top: 16px;
+  width: 414px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Bloco pill + título · nó 6:1454 — sem gap interno (só o header externo tem 10) */
+.servicos__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* Pill · nó 6:1455 — 71 x 27 */
+.servicos__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border: 1px solid var(--gold);
+  border-radius: 15px;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;          /* nó 6:1456 tem 15px de altura (15/12) */
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Título · nós 6:1457 (branco) e 6:1459 (dourado) — 366 x 54 cada linha */
+.servicos__title {
+  width: 366px;
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.5;           /* 54 / 36 */
+  color: var(--white);
+}
+
+.servicos__title-accent {
+  color: var(--gold);
+}
+
+/* Subtítulo · nó 7:1463 — 414 x 57 (3 linhas de 19px) */
+.servicos__subtitle {
+  width: 414px;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.1875;        /* 57 / 3 linhas / 16 */
+  color: var(--sobre-muted);
+}
+
+
+/* 11.2 Track de cards
+   Slots do Figma: 95 / 432 / 769 / 1106 / 1443 / 1780 → gap uniforme de 62px.
+   O track transborda os 1365px de propósito; o viewport recorta.
+   Estrutura viewport > track > cards mantida em todos os breakpoints para a
+   futura animação horizontal assumir só o deslocamento do track. */
+
+/* Ocupa a seção inteira: assim o recorte é o da própria seção, como no Figma,
+   e o glow do card ativo pode se espalhar para cima e para baixo sem ser cortado. */
+.servicos__viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.servicos__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 278.8px;               /* topo do card ativo (nó 7:1471) */
+  display: flex;
+  align-items: center;        /* todos os cards partilham o centro vertical y=468 */
+  gap: 62px;
+  padding-left: 95px;         /* primeiro slot */
+  padding-right: 32px;
+}
+
+
+/* 11.3 Card · nó 8:7 — 275 x 344 */
+
+.service-card {
+  position: relative;
+  flex-shrink: 0;
+  width: 275px;
+  height: 344px;
+  background: var(--card-glass);
+  border-radius: 25px;
+}
+
+/* Círculo do ícone · nó 16:423 — 70 x 70 em left 103 / top 26 */
+.service-card__icon {
+  position: absolute;
+  left: 103px;
+  top: 26px;
+  display: flex;
+  align-items: flex-start;
+  width: 70px;
+  height: 70px;
+  padding: 14px 15px;
+  background: var(--card-icon-bg);
+  border-radius: 35px;
+}
+
+.service-card__icon img {
+  flex-shrink: 0;
+}
+
+/* Conteúdo · nó 8:3 — 229 de largura em left 23 / top 121 */
+.service-card__body {
+  position: absolute;
+  left: 23px;
+  top: 121px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 31px;
+  width: 229px;
+}
+
+/* Título · nó 8:4.
+   Altura fixa de 2 linhas com o texto alinhado embaixo: no Figma a linha
+   dourada fica sempre em y=506, e os títulos de 1 linha (HORAS EXTRA) crescem
+   a partir dela para cima — sem isso o bloco sobe 29px. */
+.service-card__title {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 196px;
+  height: 58px;
+  font-family: var(--font-cormorant);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: normal;
+  text-align: center;
+  color: var(--white);
+}
+
+/* Linha dourada · nó 8:5 — 70 x 1px */
+.service-card__rule {
+  width: 70px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* Descrição · nó 8:6 */
+.service-card__desc {
+  width: 100%;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 10px;
+  line-height: normal;
+  text-align: center;
+  color: var(--white);
+}
+
+
+/* 11.4 Estado ativo · nó 7:1471 — 302.5 x 378.4
+   Todo o estilo do card selecionado está concentrado aqui: trocar a classe
+   entre os cards é suficiente para mover a seleção. */
+
+/* Transborda o slot de 275px simetricamente (13.75 de cada lado) via margem
+   negativa, para não deslocar os cards seguintes — no Figma o card 2 continua
+   em x=432, na posição do slot. */
+.service-card--active {
+  width: 302.5px;
+  height: 378.4px;
+  margin-inline: -13.75px;
+}
+
+/* Borda + glow · nó 8:20 — 6 camadas de sombra (18.952 / 37.903 / 125 x4).
+   Duas decisões aqui:
+   1. `drop-shadow` e não `box-shadow`: no Figma o glow nasce do alpha da forma,
+      que é só um traço de 1.5px. `box-shadow` partiria da silhueta cheia do card
+      e produziria um brilho muito mais intenso.
+   2. As camadas ficam em elementos irmãos (o próprio nó e seus pseudo-elementos)
+      em vez de encadeadas num único `filter`. O Figma mistura as 6 camadas de
+      forma independente sobre o alpha original; `filter` encadeado aplica cada
+      uma sobre o resultado da anterior, o que estourava o brilho. Como o pai não
+      tem `filter`, cada camada fica isolada. */
+.service-card__glow {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--gold);
+  border-radius: 25px;
+  pointer-events: none;
+  box-shadow:
+    0 0 22px rgba(230, 199, 0, 0.07),
+    0 0 60px rgba(230, 199, 0, 0.05),
+    0 0 175px rgba(230, 199, 0, 0.17);
+}
+
+/* Círculo do ícone ampliado · nó 16:424 — 100 x 100 em left 101.75 / top 19.2 */
+.service-card--active .service-card__icon {
+  left: 101.75px;
+  top: 19.2px;
+  width: 100px;
+  height: 100px;
+  padding: 24px 20px;
+  border-radius: 50px;
+}
+
+/* Conteúdo · nó 8:2 — left 36.75 / top 137.2 */
+.service-card--active .service-card__body {
+  left: 36.75px;
+  top: 137.2px;
+}
+
+.service-card--active .service-card__title {
+  height: 68px;               /* 2 linhas de 34px (nó 7:1470) */
+  font-size: 28px;
+}
+
+.service-card--active .service-card__rule {
+  width: 80px;
+}
+
+.service-card--active .service-card__desc {
+  font-size: 14px;
+}
+
+/* Botão "+" · nó 8:23 — 28 x 28 centrado, top 334.2 */
+.service-card__more {
+  position: absolute;
+  left: 50%;
+  top: 334.2px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 1px 5px 5px;
+  background: none;
+  border: 0.5px solid var(--gold);
+  border-radius: 30px;
+  font-family: var(--font-inter);
+  font-weight: 100;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--gold);
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
+   12. SERVIÇOS — responsivo
+   A estrutura viewport > track > cards e as medidas dos cards são as mesmas em
+   todos os breakpoints; muda apenas o overflow-x do viewport.
+   ========================================================================== */
+
+@media (max-width: 1364px) {
+  .servicos__header {
+    left: 2.4vw;
+  }
+
+  .servicos__track {
+    padding-left: 5.95vw;   /* 81.25 / 1365 */
+  }
+}
+
+@media (max-width: 1023px) {
+  .servicos {
+    height: auto;
+    padding-bottom: 64px;
+  }
+
+  .servicos__inner {
+    height: auto;
+  }
+
+  .servicos__header {
+    position: static;
+    width: auto;
+    max-width: 414px;
+    padding: 32px 24px 0;
+  }
+
+  .servicos__title {
+    width: auto;
+    font-size: 32px;
+  }
+
+  .servicos__subtitle {
+    width: auto;
+  }
+
+  /* Track volta ao fluxo para dar altura ao viewport; o padding vertical evita
+     que o glow do card ativo seja cortado pelo `overflow: hidden`. */
+  .servicos__viewport {
+    position: static;
+    margin-top: 24px;
+    padding-block: 40px;
+  }
+
+  .servicos__track {
+    position: static;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .servicos {
+    padding-bottom: 48px;
+  }
+
+  .servicos__header {
+    padding: 24px 16px 0;
+  }
+
+  .servicos__title {
+    font-size: 28px;
+  }
+
+  .servicos__subtitle {
+    font-size: 15px;
+  }
+
+  /* Única concessão do mobile: permite alcançar os cards seguintes enquanto o
+     deslocamento horizontal definitivo não é implementado. Sem scroll-snap e
+     sem qualquer outro comportamento — a seção continua estática. */
+  .servicos__viewport {
+    overflow-x: auto;
+  }
+
+  .servicos__track {
+    padding-left: 16px;
+    padding-right: 16px;
+    gap: 32px;
+  }
+
+  .service-card--active {
+    width: min(302.5px, 84vw);
+  }
+}
+
+
+/* ==========================================================================
+   13. PROCESSOS — reprodução do frame Figma "Processos" (8:26) · 1365 x 615
+   ========================================================================== */
+
+/* A composição tem 575px de altura natural e fica centralizada em 100vh.
+   No Figma há uma folga de 202px acima da seção (branco sobre branco): ela vira
+   o respiro superior desta seção, em vez de virar um espaçador separado. */
+.processos {
+  --proc-scale: 1;              /* escala de círculo/ícone/número decorativo */
+  --gap-circle-body: 25px;      /* nó 16:444 */
+  --gap-title-rule: 27px;       /* nó 12:107 (etapas 1 e 4) */
+  --gap-rule-desc: 35px;
+  --bignum-scale: 1;            /* encolhe só o número decorativo, sem mexer nos círculos */
+  --circle-size: calc(150px * var(--proc-scale));
+  --bignum-size: calc(200px * var(--proc-scale) * var(--bignum-scale));
+
+  height: 100vh;
+  display: flex;
+  align-items: center;          /* composição centralizada verticalmente */
+  background: var(--sobre-bg);
+  color: var(--sobre-text);
+}
+
+.processos__inner {
+  width: 100%;
+  max-width: var(--frame-w);
+  margin-inline: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 41px;                    /* intro termina em 391, etapas começam em 432 */
+  padding-left: 32px;
+  padding-right: 41px;
+}
+
+
+/* 13.1 Introdução · nó 10:64 — 359 x 262 em x=32 / y=90 */
+
+.processos__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+  width: 359px;
+  flex-shrink: 0;
+  margin-top: 90px;
+}
+
+/* Pill · nó 10:45 — 81 x 27 */
+.processos__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border: 1px solid var(--sobre-text);
+  border-radius: 15px;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;            /* nó 10:46 tem 15px de altura */
+  color: var(--sobre-text);
+  white-space: nowrap;
+}
+
+/* Título · nós 10:47 (preto) e 10:60 (dourado) — 36px, linhas de 54px.
+   `margin-top: -20px` compensa o gap 10 do nó 10:63: no Figma o pill e o título
+   ficam num bloco com gap 10, mas o próprio título já é o segundo filho aqui. */
+.processos__title {
+  width: 352px;
+  margin-top: -20px;
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.5;             /* 54 / 36 */
+  color: var(--sobre-text);
+}
+
+.processos__title-accent {
+  color: var(--gold);
+}
+
+/* Linha · nó 10:51 — 111 x 2px com pontas arredondadas.
+   O nó tem altura 0 no Figma (o traço é desenhado para fora), então a margem
+   negativa tira os 2px do fluxo e mantém o subtítulo em y=295. */
+.processos__rule {
+  width: 111px;
+  height: 2px;
+  margin-bottom: -2px;
+  border-radius: 1px;
+  background: var(--gold);
+}
+
+/* Subtítulo · nó 10:49 — 359 x 57 (3 linhas de 19px) */
+.processos__subtitle {
+  width: 359px;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.1875;
+  color: var(--sobre-muted);
+}
+
+
+/* 13.2 Etapas · nó 16:455 — 892 de largura */
+
+.processos__flow {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.processos__steps {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 36px;                    /* gap uniforme entre as colunas */
+}
+
+/* Timeline · nó 12:84 — camada inferior, atrás dos círculos.
+   A linha é contínua e atravessa por trás dos círculos 2 e 3; desenhá-la de
+   centro a centro do 1º ao 4º é equivalente ao Figma (os círculos são brancos
+   opacos e cobrem as pontas) e resiste a mudanças de largura. */
+.processos__timeline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* +0.5px: no Figma a linha e os pontos ficam em y=236.5, meio pixel abaixo
+     do centro dos círculos (236) */
+  top: calc(161px * var(--proc-scale) + var(--circle-size) / 2 + 0.5px);
+  pointer-events: none;
+}
+
+.processos__line {
+  position: absolute;
+  left: 95.5px;                 /* centro do 1º círculo */
+  right: 95.5px;                /* centro do 4º círculo */
+  top: -0.5px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.processos__dot {
+  position: absolute;
+  top: -6.5px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+/* Centros medidos no Figma: 608.5 / 910.5 / 1147.5 (absolutos) →
+   176.5 / 478.5 / 715.5 relativos ao início das etapas (x=432) */
+.processos__dot--1 { left: 170px; }
+.processos__dot--2 { left: 472px; }
+.processos__dot--3 { left: 709px; }
+
+
+/* 13.3 Etapa individual · nó 16:444 */
+
+.processo-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 191px;
+  flex-shrink: 0;
+}
+
+/* A 3ª etapa é 10px mais larga de cada lado no Figma (nó 16:454) */
+.processo-step--wide {
+  width: 211px;
+}
+
+/* Número decorativo · nós 12:69–12:72 — Cormorant Light 200px.
+   A margem negativa é o que o faz sobrepor o círculo: 237 − 76 = 161. */
+.processo-step__bignum {
+  height: calc(237px * var(--proc-scale) * var(--bignum-scale));
+  margin-bottom: calc(-76px * var(--proc-scale) * var(--bignum-scale));
+  font-family: var(--font-cormorant-light);
+  font-weight: 300;
+  font-size: var(--bignum-size);
+  line-height: normal;
+  color: var(--bignum);
+  white-space: nowrap;
+}
+
+/* Círculo · nós 10:65–10:68 — 150 x 150, borda 2px */
+.processo-step__circle {
+  position: relative;           /* acima da timeline */
+  display: grid;
+  place-items: center;
+  width: var(--circle-size);
+  height: var(--circle-size);
+  background: var(--sobre-bg);
+  border: 2px solid var(--circle-border);
+  border-radius: 50%;
+}
+
+.processo-step__icon {
+  width: calc(var(--icon-w) * var(--proc-scale));
+  height: calc(var(--icon-h) * var(--proc-scale));
+}
+
+.processo-step:nth-child(1) .processo-step__icon { --icon-w: 79px; --icon-h: 72px; }
+.processo-step:nth-child(2) .processo-step__icon { --icon-w: 81px; --icon-h: 80px; }
+.processo-step:nth-child(3) .processo-step__icon { --icon-w: 97px; --icon-h: 86px; }
+.processo-step:nth-child(4) .processo-step__icon { --icon-w: 65px; --icon-h: 70px; }
+
+/* Conteúdo abaixo · nós 12:112–12:116 */
+.processo-step__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 191px;
+  margin-top: var(--gap-circle-body);
+  text-align: center;
+}
+
+/* Número da etapa · nós 12:85–12:88 */
+.processo-step__num {
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2143;          /* nó de 34px */
+  color: var(--sobre-text);
+}
+
+/* Título · nós 12:89–12:93.
+   O gap número→título difere no Figma: 8px nas etapas 1 e 4, 10px nas 2 e 3
+   (wrappers com padding de 10px), colocando os títulos em y=378 e y=380. */
+.processo-step__title {
+  margin-top: 8px;
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.1875;          /* nó de 19px */
+  color: var(--sobre-text);
+}
+
+.processo-step--tight .processo-step__title {
+  margin-top: 10px;
+}
+
+/* Linha dourada · nós 12:100–12:103 — 100 x 2px */
+.processo-step__rule {
+  width: 100px;
+  height: 2px;
+  margin-top: var(--gap-title-rule);
+  background: var(--gold);
+}
+
+.processo-step--tight .processo-step__rule {
+  margin-top: calc(var(--gap-title-rule) - 2px);
+}
+
+/* Descrição · nós 12:108–12:111 — 191 de largura */
+.processo-step__desc {
+  width: 191px;
+  margin-top: var(--gap-rule-desc);
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.1875;
+  color: var(--sobre-muted);
+}
+
+
+/* ==========================================================================
+   14. PROCESSOS — responsivo
+   ========================================================================== */
+
+/* 14.1 Alturas curtas de desktop.
+   Primeiro só respiros e gaps; círculos (150px) e números decorativos (200px)
+   ficam intactos. A escala proporcional é o último degrau. */
+
+@media (max-height: 680px) {
+  .processos {
+    --gap-circle-body: 18px;
+    --gap-title-rule: 20px;
+    --gap-rule-desc: 26px;
+  }
+
+  .processos__intro {
+    margin-top: 60px;
+  }
+}
+
+@media (max-height: 600px) {
+  .processos {
+    --gap-circle-body: 14px;
+    --gap-title-rule: 16px;
+    --gap-rule-desc: 20px;
+  }
+
+  .processos__intro {
+    margin-top: 40px;
+    gap: 22px;
+  }
+}
+
+/* Último recurso: reduz círculo, ícone e número decorativo proporcionalmente */
+@media (max-height: 540px) {
+  .processos {
+    --proc-scale: 0.82;
+  }
+}
+
+
+/* 14.2 Larguras */
+
+@media (max-width: 1364px) {
+  .processos {
+    --bignum-scale: 0.85;   /* colunas mais estreitas: evita os números se tocarem */
+  }
+
+  .processos__inner {
+    padding-left: 2.4vw;
+    padding-right: 3vw;
+    gap: 3vw;
+  }
+
+  /* Mantém os 359px do Figma: encolher a intro faria o título quebrar em 4 linhas */
+  .processos__intro {
+    width: 359px;
+  }
+
+  .processos__subtitle {
+    width: 100%;
+  }
+
+  .processos__title {
+    width: 100%;
+  }
+
+  .processos__flow {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .processos__steps {
+    gap: 1.6vw;
+  }
+
+  .processo-step,
+  .processo-step--wide {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+
+  .processo-step__body,
+  .processo-step__desc {
+    width: 100%;
+  }
+
+  /* Pontos acompanham a largura das colunas */
+  .processos__line {
+    left: 12.5%;
+    right: 12.5%;
+  }
+
+  .processos__dot--1 { left: 19%; }
+  .processos__dot--2 { left: 53%; }
+  .processos__dot--3 { left: 79.5%; }
+}
+
+/* Abaixo de 1200px a intro lado a lado espremeria demais as colunas (os números
+   decorativos passariam a encostar uns nos outros), então ela sobe para cima das
+   etapas — que continuam horizontais, com a largura toda disponível. */
+@media (max-width: 1199px) {
+  .processos {
+    --bignum-scale: 0.8;
+    height: auto;
+    min-height: 100vh;
+    padding-block: 64px;
+  }
+
+  .processos__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 48px;
+    padding-inline: 24px;
+  }
+
+  .processos__intro {
+    width: 100%;
+    max-width: 520px;
+    margin-top: 0;
+  }
+}
+
+/* Mobile — etapas empilhadas 01 → 04 com a linha vertical */
+@media (max-width: 767px) {
+  .processos {
+    --bignum-scale: 1;   /* empilhado: cada etapa tem a largura toda */
+    padding-block: 48px;
+  }
+
+  .processos__inner {
+    padding-inline: 16px;
+    gap: 36px;
+  }
+
+  .processos__title {
+    font-size: 28px;
+  }
+
+  .processos__steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .processo-step,
+  .processo-step--wide {
+    width: 100%;
+    max-width: 320px;
+    flex: 0 0 auto;
+  }
+
+  /* A linha de conexão passa a ser vertical, ligando os círculos empilhados */
+  .processos__timeline {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: auto;
+    width: 1px;
+  }
+
+  .processos__line {
+    left: 0;
+    right: auto;
+    top: calc(161px * var(--proc-scale) + var(--circle-size) / 2);
+    bottom: 0;
+    width: 1px;
+    height: auto;
+  }
+
+  .processos__dot {
+    left: -6px;
+    top: auto;
+  }
+
+  .processos__dot--1 { top: 28%; }
+  .processos__dot--2 { top: 53%; }
+  .processos__dot--3 { top: 78%; }
+}
+
+
+/* ==========================================================================
+   15. FEEDBACKS — reprodução do frame Figma "Feedbacks" (12:122) · 1365 x 704
+   ========================================================================== */
+
+.feedbacks {
+  position: relative;
+  height: 704px;
+  overflow: hidden;
+  color: var(--white);
+}
+
+/* Background · nó 13:187 — o webp exportado já traz o recorte E o scrim
+   rgba(0,0,0,.5) do nó 12:186 embutidos (verificado comparando os pixels crus
+   com o render do Figma), então o scrim não é reaplicado aqui. */
+.feedbacks__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/feedbacks/background-feedback.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Só carrega os <symbol>; não ocupa espaço */
+.feedbacks__defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.feedbacks__inner {
+  position: relative;
+  width: 100%;
+  max-width: var(--frame-w);
+  height: 100%;
+  margin-inline: auto;
+}
+
+
+/* 15.1 Header · nó 14:208 — 838 x 145 em x=32 / y=16 */
+
+.feedbacks__header {
+  position: absolute;
+  left: 32px;
+  top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 31px;
+}
+
+.feedbacks__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  width: 354px;
+  flex-shrink: 0;
+}
+
+/* Pill · nó 14:199 — 84 x 27 */
+.feedbacks__pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border: 1px solid var(--gold);
+  border-radius: 15px;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.25;          /* nó 14:200 tem 15px de altura */
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Título · nós 14:202 (branco) e 14:203 (dourado) — 36px, linhas de 54px */
+.feedbacks__title {
+  width: 372px;
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.5;           /* 54 / 36 */
+  color: var(--white);
+}
+
+.feedbacks__title-accent {
+  color: var(--gold);
+}
+
+/* Divisor · nó 14:204 — a linha de 111x2 do Figma, rotacionada 90°.
+   O nó tem largura 0 no Figma (o traço é desenhado para fora), então as margens
+   negativas tiram os 2px do fluxo e mantêm o subtítulo em x=448. */
+.feedbacks__divider {
+  width: 2px;
+  height: 111px;
+  margin-inline: -1px;
+  border-radius: 1px;
+  background: var(--gold);
+  flex-shrink: 0;
+}
+
+/* Subtítulo · nó 14:205 — 422 de largura (4 linhas de 19px) */
+.feedbacks__subtitle {
+  width: 422px;
+  flex-shrink: 0;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.1875;
+  color: var(--sobre-muted);
+}
+
+
+/* 15.2 Pilha de cards · nó 14:370
+   Os três cards são alinhados pela base (y=563 no frame) e posicionados por um
+   offset de slot; assim o card ativo cresce para cima sozinho e, no futuro, o
+   GSAP só precisa mover `--slot-x` e trocar a classe `is-active`. */
+
+.feedbacks__cards {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 163px;
+  height: 400px;              /* 163 … 563 */
+}
+
+.feedback-card {
+  position: absolute;
+  bottom: 0;
+  left: calc(50% + var(--slot-x, 0px));
+  transform: translateX(-50%);
+  width: 338px;
+  height: 333px;
+  background: linear-gradient(to bottom, #FFFFFF, #999999);
+  border-radius: 25px;
+  z-index: 1;
+}
+
+/* Centros medidos no Figma: 337 / 683 / 1027 — deslocamentos a partir do centro
+   da seção (682.5). Não são simétricos: -345.5 e +344.5. */
+.feedback-card--left   { --slot-x: -345.5px; }
+.feedback-card--center { --slot-x: 0.5px; }
+.feedback-card--right  { --slot-x: 344.5px; z-index: 2; }
+
+/* O canto quadrado fica voltado para o centro e some atrás do card ativo */
+.feedback-card--left  { border-bottom-right-radius: 0; }
+.feedback-card--right { border-bottom-left-radius: 0; }
+
+/* Retângulo interno · nós 14:231 / 14:262 */
+.feedback-card::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  width: 322px;
+  height: 320px;
+  border: 1px solid var(--card-inner-border);
+  border-radius: 25px;
+  pointer-events: none;
+}
+
+/* Aspa · nós 14:218 / 14:260 */
+.feedback-card__quote {
+  position: absolute;
+  left: 14px;
+  top: 33px;
+  font-family: var(--font-hedvig);
+  font-weight: 400;
+  font-size: 150px;
+  line-height: normal;
+  color: var(--quote-soft);
+  white-space: nowrap;
+}
+
+/* Estrelas · nós 14:216 / 14:254 — 5 x 25px */
+.feedback-card__stars {
+  position: absolute;
+  left: 199px;
+  top: 76px;
+  display: flex;
+}
+
+.feedback-card__star {
+  width: 25px;
+  height: 25px;
+  fill: var(--gold);
+  flex-shrink: 0;
+}
+
+/* Texto do depoimento · nós 14:219 / 14:263 */
+.feedback-card__text {
+  position: absolute;
+  left: 39px;
+  top: 153px;
+  width: 272px;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: normal;
+  color: var(--sobre-muted);
+}
+
+/* Bloco do cliente · nós 16:459 / 16:463 */
+/* Sem `gap`: no Figma o avatar e os textos ficam num sub-bloco, e só o selo tem
+   os 3px de distância. Usar gap aqui somaria 3px a mais na largura. */
+.feedback-card__client {
+  position: absolute;
+  left: 39px;
+  top: 250px;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Avatar · nós 16:457 / 16:461 */
+.feedback-card__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 12px 10px 13px;
+  background: linear-gradient(to bottom, #666666, #000000 69.715%);
+  border-radius: 50%;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: normal;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+.feedback-card__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+  width: 67px;
+  margin-left: 16px;          /* gap do nó 16:458 */
+  flex-shrink: 0;
+}
+
+.feedback-card__name {
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: normal;
+  color: var(--sobre-text);
+}
+
+.feedback-card__verified {
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 8px;
+  line-height: normal;
+  color: var(--verified-text);
+}
+
+/* Selo verificado · nós 14:227 / 14:270 — 11x11 com glow dourado */
+.feedback-card__check {
+  width: 11px;
+  height: 11px;
+  margin-left: 3px;
+  flex-shrink: 0;
+  filter:
+    drop-shadow(0 0 0.83px var(--gold))
+    drop-shadow(0 0 5.8px rgba(217, 164, 65, 0.75));
+}
+
+
+/* 15.3 Estado ativo · nó 14:261 — 406 x 400
+   Todas as diferenças do card em destaque ficam concentradas aqui, para que
+   trocar a classe entre os cards seja suficiente. */
+
+.feedback-card.is-active {
+  width: 406px;
+  height: 400px;
+  background: linear-gradient(to bottom, #F4F4F4 45.195%, #8E8E8E);
+  border-radius: 25px;
+  z-index: 3;
+  box-shadow:
+    0 7px 7.5px rgba(0, 0, 0, 0.35),
+    0 27px 13.5px rgba(0, 0, 0, 0.3),
+    0 62px 18.5px rgba(0, 0, 0, 0.18),
+    0 110px 22px rgba(0, 0, 0, 0.05),
+    0 172px 24px rgba(0, 0, 0, 0.01);
+}
+
+.feedback-card.is-active::before {
+  left: 17px;
+  top: 16px;
+  width: 372px;
+  height: 369px;
+}
+
+.feedback-card.is-active .feedback-card__quote {
+  left: 26px;
+  top: 55px;
+  height: 97px;              /* altura explícita do nó 14:260 */
+  font-size: 160px;
+}
+
+.feedback-card.is-active .feedback-card__stars {
+  left: 230px;
+  top: 98px;
+}
+
+.feedback-card.is-active .feedback-card__star {
+  width: 30px;
+  height: 30px;
+}
+
+.feedback-card.is-active .feedback-card__text {
+  left: 67px;
+  top: 188px;
+}
+
+.feedback-card.is-active .feedback-card__client {
+  left: 26px;
+  top: 315px;
+}
+
+.feedback-card.is-active .feedback-card__avatar {
+  width: 42px;
+  height: 42px;
+  font-size: 14px;
+}
+
+.feedback-card.is-active .feedback-card__identity {
+  width: 86px;
+}
+
+.feedback-card.is-active .feedback-card__name {
+  font-size: 14px;
+}
+
+.feedback-card.is-active .feedback-card__verified {
+  font-size: 10px;
+}
+
+
+/* 15.4 Composição inferior · nó 14:379 — 636 x 130 em x=365 / y=539 */
+
+.feedbacks__closing {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 539px;
+  width: 636px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+/* A aspa fica centrada e as duas linhas partem das bordas até ela · nó 14:376 */
+.feedbacks__closing-mark {
+  position: relative;
+  width: 100%;
+  height: 97px;
+}
+
+.feedbacks__quote {
+  position: absolute;
+  left: 281px;
+  top: 0;
+  height: 97px;              /* altura explícita do nó 14:374 */
+  font-family: var(--font-hedvig);
+  font-weight: 400;
+  font-size: 160px;
+  line-height: normal;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* Linhas · nó 14:373 — 1px em mt 73, de 0 a 225 e de 411 a 636 */
+.feedbacks__closing-rule {
+  position: absolute;
+  top: 73px;
+  width: 225px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.feedbacks__closing-rule--left  { left: 0; }
+.feedbacks__closing-rule--right { left: 411px; }
+
+/* Frase · nó 14:378 */
+.feedbacks__closing-text {
+  width: 100%;
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: normal;
+  text-align: center;
+  color: var(--closing-text);
+}
+
+
+/* ==========================================================================
+   16. FEEDBACKS — responsivo
+   A estrutura da pilha (slots + estado ativo) é a mesma em todos os
+   breakpoints; muda apenas o offset dos slots, até o mobile empilhar.
+   ========================================================================== */
+
+@media (max-width: 1364px) {
+  .feedbacks__header {
+    left: 2.4vw;
+  }
+
+  .feedback-card--left  { --slot-x: -25.3vw; }
+  .feedback-card--right { --slot-x: 25.3vw; }
+}
+
+/* Header em coluna: lado a lado não cabe mais */
+@media (max-width: 1199px) {
+  .feedbacks {
+    height: auto;
+    padding-block: 56px;
+  }
+
+  .feedbacks__inner {
+    height: auto;
+    padding-inline: 24px;
+  }
+
+  .feedbacks__header {
+    position: static;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    max-width: 560px;
+  }
+
+  .feedbacks__heading,
+  .feedbacks__title,
+  .feedbacks__subtitle {
+    width: 100%;
+  }
+
+  /* O divisor passa a ser horizontal */
+  .feedbacks__divider {
+    width: 111px;
+    height: 2px;
+  }
+
+  .feedbacks__cards {
+    position: relative;
+    top: 0;
+    margin-top: 48px;
+  }
+
+  .feedbacks__closing {
+    position: relative;
+    top: 0;
+    margin-top: 48px;
+    width: min(636px, 100%);
+  }
+}
+
+@media (max-width: 1023px) {
+  .feedback-card--left  { --slot-x: -22vw; }
+  .feedback-card--right { --slot-x: 22vw; }
+}
+
+/* Mobile — mesma marcação e mesmas classes, empilhadas em coluna:
+   sobrepor os cards nesta largura deixaria os textos ilegíveis. */
+@media (max-width: 767px) {
+  .feedbacks__inner {
+    padding-inline: 16px;
+  }
+
+  .feedbacks__title {
+    font-size: 28px;
+  }
+
+  .feedbacks__cards {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  /* O conteúdo dos cards deixa de ser absoluto e passa a fluir: nas larguras do
+     mobile as coordenadas fixas do Figma (estrelas em left 230, por exemplo)
+     transbordariam o card. Mesmos elementos e mesmas classes. */
+  .feedback-card,
+  .feedback-card.is-active {
+    position: static;
+    transform: none;
+    width: min(338px, 100%);
+    height: auto;
+    padding: 26px 24px 24px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .feedback-card.is-active {
+    width: min(406px, 100%);
+  }
+
+  .feedback-card::before {
+    inset: 8px 8px 7px;
+    left: 8px;
+    top: 8px;
+    width: auto;
+    height: auto;
+  }
+
+  .feedback-card__quote,
+  .feedback-card__stars,
+  .feedback-card__text,
+  .feedback-card__client {
+    position: static;
+  }
+
+  .feedback-card__quote,
+  .feedback-card.is-active .feedback-card__quote {
+    height: auto;
+    font-size: 90px;
+    line-height: 0.62;
+  }
+
+  .feedback-card__stars,
+  .feedback-card.is-active .feedback-card__stars {
+    align-self: flex-end;
+    margin-top: -28px;
+  }
+
+  .feedback-card__text,
+  .feedback-card.is-active .feedback-card__text {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .feedback-card__client,
+  .feedback-card.is-active .feedback-card__client {
+    margin-top: 24px;
+  }
+
+  /* A composição inferior encolhe junto */
+  .feedbacks__closing {
+    width: 100%;
+  }
+
+  .feedbacks__closing-mark {
+    height: 72px;
+  }
+
+  .feedbacks__quote {
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 120px;
+  }
+
+  .feedbacks__closing-rule {
+    top: 55px;
+    width: calc(50% - 55px);
+  }
+
+  .feedbacks__closing-rule--left  { left: 0; }
+  .feedbacks__closing-rule--right { left: auto; right: 0; }
+
+  .feedbacks__closing-text {
+    font-size: 15px;
+  }
+}
+
+
+/* ==========================================================================
+   17. HERO — estados iniciais da intro (GSAP)
+
+   Este bloco só entra em vigor enquanto `script.js` mantém `.is-hero-intro`
+   no <html>, isto é, durante a animação de entrada. Nenhum elemento do Hero
+   nasce invisível no CSS estático: se o JS não rodar, se o CDN do GSAP falhar
+   ou se a intro já tiver rodado nesta sessão, a classe nunca é adicionada e o
+   Hero carrega direto no estado final aprovado.
+
+   O background (.hero__background) não aparece aqui de propósito — ele fica
+   visível e imóvel desde o primeiro paint.
+   ========================================================================== */
+
+.is-hero-intro .hero-nav__links,
+.is-hero-intro .hero-nav__contact,
+.is-hero-intro .hero-brand__badge-wrap,
+.is-hero-intro .hero__advogado,
+.is-hero-intro .hero-rating,
+.is-hero-intro .hero-cta,
+.is-hero-intro .hero-metrics__item {
+  opacity: 0;
+}
+
+/* Assinatura · nó 16:471.
+   O SVG é um <rect> com fill de <pattern> apontando para um PNG — não tem
+   paths, então stroke-dasharray/DrawSVG são impossíveis sem redesenhá-lo.
+   A escrita é simulada por uma máscara que varre da esquerda para a direita;
+   os 9% de recuo do primeiro stop dão a borda suave da "tinta". Ao final da
+   timeline a classe sai e a máscara deixa de existir por completo. */
+.is-hero-intro .hero-brand__signature {
+  --sig: 0%;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--sig) - 9%), transparent var(--sig));
+          mask-image: linear-gradient(90deg, #000 calc(var(--sig) - 9%), transparent var(--sig));
+}
+
+
+/* ==========================================================================
+   18. SERVIÇOS — estados da navegação horizontal (GSAP + ScrollTrigger)
+
+   Nada aqui altera o estado estático aprovado: o card 1 continua ativo com
+   glow e botão "+", e os cards 2–6 continuam sem nenhum dos dois à vista.
+   Os elementos passaram a existir no HTML dos seis cards apenas para que a
+   seleção possa se mover entre eles.
+   ========================================================================== */
+
+/* Glow e "+" pertencem só ao card ativo. Antes desta etapa as duas classes
+   eram globais e existiam apenas no primeiro card; agora existem nos seis e
+   o escopo é que decide quem os mostra. `visibility` (e não só `opacity`)
+   tira o botão da ordem de tabulação — o JS ainda sincroniza tabindex e
+   aria-hidden, para que apenas o "+" do card ativo seja interativo. */
+.service-card:not(.service-card--active) > .service-card__glow,
+.service-card:not(.service-card--active) > .service-card__more {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Navegação horizontal manual: aplicada pelo JS sempre que a experiência
+   pinada não estiver ativa — `prefers-reduced-motion`, falha do CDN do GSAP
+   ou breakpoint sem pin. Sem isso os cards seguintes ficariam presos atrás
+   do `overflow: hidden` do viewport. */
+.servicos--livre .servicos__viewport {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+/* Tablet: entre 768 e 1023px o track sai do posicionamento absoluto mas o
+   viewport seguia recortando, deixando os cards 2–6 inalcançáveis. Fica no
+   CSS (e não dependendo do JS) para valer mesmo sem script. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .servicos__viewport {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+}
+
+
+/* Ícones: escala vetorial preservando o aspect ratio de cada SVG.
+   Os arquivos têm proporções diferentes — `icon-direito-trabalhista` é 60x52
+   (1.154) e os outros cinco são 40x42 (0.952). A caixa de conteúdo do círculo
+   também muda de proporção entre os estados: 40x42 no normal e 60x52 no ativo.
+   Com os atributos width/height do HTML sozinhos o ícone não acompanhava o
+   círculo: o do card 1 transbordava 5px quando ele ficava inativo, e os dos
+   cards 2–6 continuavam em 40x42 encostados no canto quando ficavam ativos.
+   Forçar largura e altura resolveria o tamanho mas esticaria cinco dos seis
+   ícones em 21%; `contain` escala até caber mantendo a proporção, e o
+   centro do flex mantém o ícone no meio do círculo nos dois estados. */
+.service-card__icon {
+  justify-content: center;
+  align-items: center;
+}
+
+.service-card__icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* ==========================================================================
+   19. SERVIÇOS — CTA de encerramento · nós 33:6 / 33:7 / 35:21
+
+   Fecha a composição horizontal da seção: quando o track chega ao fim, o
+   card 6 e este CTA formam juntos o frame final. Ele vive dentro do track
+   (para acompanhar o deslocamento) mas NÃO é um serviço — não recebe
+   .service-card, não entra na seleção, não tem estado ativo nem botão "+".
+   ========================================================================== */
+
+/* Caixa · nó 33:6 — 472 x 378, mesmo tint de vidro dos cards (rgba(217,217,217,.2)).
+   `margin-left: -7px` desconta o gap de 62px do track para os 55px que o Figma
+   usa entre o card 6 e o CTA (859.5 − 804.5). `top: -7px` reproduz o centro
+   próprio do CTA: o Figma o alinha em y=461 e os cards em y=468 — deslocar por
+   `top` mantém a altura do track intacta, então nenhum card se move. */
+.servicos__cta {
+  position: relative;
+  top: -7px;
+  flex-shrink: 0;
+  width: 472px;
+  height: 378px;
+  margin-left: -7px;
+  background: var(--card-glass);
+  border-radius: 25px;
+}
+
+/* Borda + glow · nó 33:7 — mesma linguagem do card ativo. As 6 camadas de
+   drop-shadow do Figma não são reproduzíveis literalmente (encadear `filter`
+   estoura o brilho), então reaproveita a calibração já validada do glow. */
+.servicos__cta-glow {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid var(--gold);
+  border-radius: 25px;
+  pointer-events: none;
+  box-shadow:
+    0 0 22px rgba(230, 199, 0, 0.07),
+    0 0 60px rgba(230, 199, 0, 0.05),
+    0 0 175px rgba(230, 199, 0, 0.17);
+}
+
+/* Conteúdo · nó 35:21 — 352 de largura em left 42 / top 50, coluna gap 22 */
+.servicos__cta-content {
+  position: absolute;
+  left: 42px;
+  top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  width: 352px;
+}
+
+/* Eyebrow · nó 33:8 */
+.servicos__cta-eyebrow {
+  width: 100%;
+  font-family: var(--font-cormorant);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.1875;        /* 19 / 16 */
+  color: var(--gold);
+}
+
+/* Linha · nó 33:9 — 187px. O nó tem altura 0 e o traço é desenhado 1px acima;
+   a margem negativa tira a espessura do fluxo para não empurrar o título. */
+.servicos__cta-rule {
+  width: 187px;
+  height: 1px;
+  margin-top: -1px;
+  background: var(--gold);
+}
+
+/* Título · nó 33:10 — 236 de largura, 2 linhas de 34px */
+.servicos__cta-title {
+  width: 236px;
+  font-family: var(--font-cormorant);
+  font-weight: 600;
+  font-size: 28px;
+  line-height: 1.2142857;     /* 68 / 2 / 28 */
+  color: var(--white);
+}
+
+/* Texto · nó 33:11 — 352 de largura, 3 linhas de 19px */
+.servicos__cta-text {
+  width: 100%;
+  font-family: var(--font-inter);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.1875;        /* 57 / 3 / 16 */
+  color: #CBC7C7;
+}
+
+/* Botão · nó 35:14 — 323.86 x 46.09 */
+.servicos__cta-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 37px;
+  padding: 10px 25px;
+  background: var(--gold);
+  border-radius: 15px;
+  white-space: nowrap;
+}
+
+.servicos__cta-label {
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.1875;        /* 19 / 16 */
+  color: var(--white);
+}
+
+/* Seta · nó 35:18 — caixa de 25.859 x 26.085 com o vetor girado 35° */
+.servicos__cta-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 25.859px;
+  height: 26.085px;
+  flex-shrink: 0;
+}
+
+.servicos__cta-arrow img {
+  width: 19.688px;
+  height: 19.24px;
+  transform: rotate(35deg);
+}
+
+
+/* ==========================================================================
+   20. PROCESSOS — hover dos círculos
+
+   Único acréscimo visual da seção: o círculo do ícone responde ao mouse com
+   um crescimento discreto. `transform: scale` não ocupa espaço estrutural,
+   então a linha da timeline, os pontos dourados, os números decorativos e os
+   demais círculos não se movem. O ícone acompanha por ser filho do círculo.
+
+   Restrito a ponteiros com hover real — em touch o `:hover` fica "grudado"
+   depois do toque — e desligado sob `prefers-reduced-motion: reduce`.
+   ========================================================================== */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .processo-step__circle {
+    transform-origin: center center;
+    transition: transform 0.3s ease;
+  }
+
+  .processo-step__circle:hover {
+    transform: scale(1.05);
+  }
+}
+
+
+/* ==========================================================================
+   21. FEEDBACKS — apoio às animações (GSAP + ScrollTrigger)
+
+   Nenhum valor visual muda aqui: o retângulo interno passa a ler suas medidas
+   de custom properties cujos padrões são exatamente os que já estavam fixos.
+   Isso existe porque o retângulo é um `::before` — o GSAP não anima um
+   pseudo-elemento diretamente, mas anima as variáveis do card, e o pseudo as
+   herda. Sem isso a moldura saltaria enquanto o card cresce ou encolhe.
+   ========================================================================== */
+
+/* Restrito a ≥768px, que é onde o carrossel existe: abaixo disso o responsivo
+   redefine o `::before` com `inset` e `auto`, e estas regras — por virem
+   depois no arquivo — sobrescreveriam aquelas e quebrariam o card no mobile. */
+@media (min-width: 768px) {
+  .feedback-card {
+    --inner-x: 8px;
+    --inner-y: 7px;
+    --inner-w: 322px;
+    --inner-h: 320px;
+  }
+
+  .feedback-card.is-active {
+    --inner-x: 17px;
+    --inner-y: 16px;
+    --inner-w: 372px;
+    --inner-h: 369px;
+  }
+
+  .feedback-card::before {
+    left: var(--inner-x);
+    top: var(--inner-y);
+    width: var(--inner-w);
+    height: var(--inner-h);
+  }
+}
+
+
+/* ==========================================================================
+   22. NAVEGAÇÃO — hover/foco da navbar e botão "voltar ao topo"
+   ========================================================================== */
+
+/* Hover dourado dos links textuais. Só onde existe mouse de verdade: em touch
+   o `:hover` fica preso depois do toque. A transição vive fora da media query
+   para que a mudança de cor do foco também seja suave. */
+.hero-nav__link {
+  transition: color 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hero-nav__link:hover {
+    color: var(--gold);
+  }
+}
+
+/* Acessibilidade por teclado — contorno dourado, sem deslocar o layout. */
+.hero-nav__link:focus-visible,
+.hero-nav__contact:focus-visible,
+.ao-topo:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.hero-nav__contact:focus-visible,
+.ao-topo:focus-visible {
+  border-radius: 25px;
+}
+
+
+/* 22.1 Voltar ao topo — fixo no centro inferior da viewport */
+
+.ao-topo {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+
+  background: rgba(4, 0, 52, 0.55);
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  color: var(--gold);
+  cursor: pointer;
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
+  box-shadow: 0 0 18px rgba(217, 164, 65, 0.16);
+
+  /* Oculto por padrão: `visibility` e `pointer-events` tiram o botão do
+     alcance do teclado e do mouse sem recorrer a `display`, que impediria
+     a transição. O deslocamento de 10px acompanha o fade. */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(-50%) translateY(10px);
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s linear 0.35s,
+              background-color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+.ao-topo.is-visivel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0s,
+              background-color 0.2s ease,
+              border-color 0.2s ease;
+}
+
+.ao-topo__seta {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.22s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ao-topo.is-visivel:hover {
+    background: rgba(4, 0, 52, 0.75);
+    border-color: #E7BC69;
+  }
+
+  /* Só a seta sobe 2px — mexer no botão inteiro brigaria com o
+     translateX(-50%) que o mantém centralizado. */
+  .ao-topo.is-visivel:hover .ao-topo__seta {
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ao-topo,
+  .ao-topo.is-visivel,
+  .ao-topo__seta,
+  .hero-nav__link {
+    transition: none;
+  }
+}
+
+
+/* ==========================================================================
+   23. MICROINTERAÇÕES DOS BOTÕES
+
+   Uma linguagem só para os cinco alvos: dourado mais luminoso, um reflexo
+   metálico que atravessa uma vez, um deslocamento curto e a seta ↗ andando
+   3px para cima e para a direita. Nada aqui existe no estado em repouso —
+   todo o bloco vive dentro de media queries de hover/movimento e as
+   propriedades de repouso são neutras (`opacity: 0`, sombra transparente),
+   de modo que o desenho estático aprovado continua pixel a pixel o mesmo.
+
+   Três decisões que valem registro:
+
+   1. O shine é o `background-position` de um gradiente sobre um `::before`
+      que cobre o botão. A alternativa usual — uma faixa com `translateX` e
+      `overflow: hidden` no botão — exigiria recortar o elemento, e
+      `overflow`/`clip-path` no botão recortaria também o contorno de
+      `:focus-visible`. O fundo de um pseudo-elemento já é recortado pela
+      própria caixa e pelo `border-radius: inherit`, sem tocar no foco.
+
+   2. `position: relative` nos botões entra só dentro da media query de
+      hover. Sozinho (com `z-index: auto`) ele não cria stacking context,
+      então não muda o antialiasing dos textos sobre vidro.
+
+   3. Os botões que o GSAP anima na entrada (`.hero-nav__contact`,
+      `.hero-cta`, `.sobre__cta`) só ganham `transition: transform` depois
+      que a timeline termina e o `clearProps` roda — daí a classe
+      `.micro-pronto`, aplicada pelo script. Sem esse recorte a transição
+      perseguiria os valores que o GSAP escreve a cada quadro e o reveal
+      ficaria arrastado.
+   ========================================================================== */
+
+:root {
+  --gold-lit:   #E3B45C;                    /* dourado um passo mais luminoso */
+  --gold-dark:  #040034;                    /* texto sobre o preenchimento    */
+  --shine:      rgba(255, 246, 228, 0.42);  /* reflexo metálico, não flash    */
+  --micro-ease: cubic-bezier(0.22, 0.61, 0.36, 1);   /* equivale a power2.out */
+}
+
+
+/* 23.1 Press — vale também no toque, por isso fora da query de hover.
+   O `scale` fica no próprio botão; nenhum deles carrega transform do CSS. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-cta.micro-pronto,
+  .servicos__cta-button {
+    transition: transform 0.3s var(--micro-ease),
+                background-color 0.3s ease,
+                box-shadow 0.3s ease;
+  }
+
+  .hero-cta.micro-pronto:active,
+  .servicos__cta-button:active {
+    transform: scale(0.98);
+    transition-duration: 0.12s;
+  }
+}
+
+
+/* 23.2 Reflexo metálico — CONTATO, INICIE O SEU CASO e FALAR COM ESPECIALISTA.
+   Uma implementação só para os três botões dourados preenchidos.
+
+   O reflexo é o `background-image` do próprio botão, não um pseudo-elemento
+   sobreposto. A versão com `::before` foi escrita primeiro e medida: mesmo
+   invisível (`opacity: 0`) ela alterava 3556 pixels do Hero em repouso — a
+   camada extra muda a composição sobre o vidro com `backdrop-filter`. O fundo
+   do próprio elemento é recortado pelo `border-radius` sem criar camada
+   alguma, e o estado em repouso voltou a ser idêntico ao aprovado.
+
+   As posições parecem invertidas e não são: com a imagem mais larga que a
+   caixa (260%), `background-position: 100%` alinha a borda DIREITA da imagem
+   à direita do botão, jogando a faixa (que fica no meio da imagem) para fora
+   pela esquerda; `0%` alinha as esquerdas e a faixa sai pela direita. Assim o
+   reflexo atravessa da esquerda para a direita e, nas duas pontas, está fora
+   do botão — por isso a volta pode ser instantânea (0s) sem nenhum corte
+   visível, e o brilho nunca desanda de volta ao tirar o mouse. */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  /* Em repouso só a geometria do fundo é declarada — sem `background-image`
+     não existe camada nenhuma e o botão pinta exatamente como antes. Isso
+     também foi medido: com o gradiente declarado o tempo todo, mesmo com a
+     faixa fora da caixa, as linhas de topo e base do retângulo arredondado
+     mudavam (≈400 pixels, delta até 41), porque a cor de fundo e a imagem
+     são recortadas pelo raio em camadas separadas. O preço é que, se o
+     ponteiro sair no meio da passagem, o reflexo termina de uma vez em vez
+     de completar o percurso — 0.6s no pior caso, contra uma alteração
+     permanente no desenho aprovado. */
+  .hero-nav__contact,
+  .hero-cta,
+  .servicos__cta-button {
+    background-repeat: no-repeat;
+    background-size: 260% 100%;
+    background-position: 100% 0;
+  }
+
+  /* Sobe 2px, o dourado clareia e a sombra dourada aparece. A sombra em
+     repouso é transparente e de raio zero (invisível) só para que a
+     transição tenha de onde partir — `none` não interpola.
+
+     Duas transições: ao entrar o reflexo leva 0.6s para atravessar; ao sair
+     ele volta em 0s, com atraso de 0.3s para o corte acontecer só depois de
+     o resto ter assentado — e como nas duas pontas a faixa está fora do
+     botão, o corte não aparece. */
+  .hero-nav__contact.micro-pronto,
+  .hero-cta.micro-pronto,
+  .servicos__cta-button {
+    box-shadow: 0 0 0 0 rgba(217, 164, 65, 0);
+    transition: transform 0.3s var(--micro-ease),
+                background-color 0.3s ease,
+                box-shadow 0.3s ease,
+                background-position 0s linear 0.3s;
+  }
+
+  .hero-nav__contact.micro-pronto:hover,
+  .hero-cta.micro-pronto:hover,
+  .servicos__cta-button:hover {
+    background-image: linear-gradient(100deg,
+                        rgba(255, 246, 228, 0) 42%,
+                        var(--shine) 50%,
+                        rgba(255, 246, 228, 0) 58%);
+    background-position: 0% 0;
+    transition: transform 0.3s var(--micro-ease),
+                background-color 0.3s ease,
+                box-shadow 0.3s ease,
+                background-position 0.6s var(--micro-ease);
+  }
+
+  .hero-nav__contact.micro-pronto:hover,
+  .hero-cta.micro-pronto:hover,
+  .servicos__cta-button:hover {
+    transform: translateY(-2px);
+    background-color: var(--gold-lit);
+    box-shadow: 0 6px 18px rgba(217, 164, 65, 0.22);
+  }
+
+  /* Vem depois do :hover de propósito — mesma especificidade, e o clique
+     precisa vencer. As durações batem, na ordem, com a lista de `transition`
+     acima (transform, background-color, box-shadow, background-position):
+     só o afundamento fica curto, o resto continua como estava. */
+  .hero-cta.micro-pronto:active,
+  .servicos__cta-button:active {
+    transform: translateY(-2px) scale(0.98);
+    transition-duration: 0.12s, 0.3s, 0.3s, 0.6s;
+  }
+
+  /* 23.3 Setas ↗ — mesmo deslocamento e mesma duração nos três CTAs.
+     (a correção de hit-testing que torna o CTA do Hero alcançável está em
+     23.8, fora desta media query, porque também vale no toque)
+     Em Serviços quem anda é o invólucro: a imagem já carrega rotate(35deg)
+     do desenho e escrever transform nela apagaria o giro. */
+  .hero-cta__icon,
+  .sobre__cta-icon,
+  .servicos__cta-arrow {
+    transition: transform 0.28s var(--micro-ease);
+  }
+
+  .hero-cta:hover .hero-cta__icon,
+  .sobre__cta:hover .sobre__cta-icon,
+  .servicos__cta-button:hover .servicos__cta-arrow {
+    transform: translate(3px, -3px);
+  }
+
+
+  /* 23.4 AGENDAR ATENDIMENTO — preenchimento dourado da esquerda para a direita.
+
+     O briefing descreve este botão como outline (fundo transparente, borda e
+     texto dourados); no desenho aprovado ele já é dourado preenchido com
+     texto branco. O mecanismo pedido foi mantido inteiro — varredura da
+     esquerda para a direita, texto escurecendo, seta acompanhando — mudando
+     apenas o que entra: um dourado mais luminoso sobre o dourado base.
+
+     Pelo mesmo motivo do 23.2, o preenchimento é o `background-image` do
+     botão crescendo em `background-size`, e não um `::before` com `scaleX`.
+     A versão com pseudo-elemento exigia `z-index` no rótulo e no ícone para
+     não ser encoberta, e esse `z-index` — medido — mudava 30 pixels do ícone
+     em repouso. O fundo do elemento pinta naturalmente abaixo do conteúdo,
+     é recortado pelo raio de 15px sem `overflow`, e nada precisa de camada
+     própria. A largura do botão não entra na conta: `background-size` não
+     participa do layout, então não há reflow nem deslocamento. */
+  .sobre__cta {
+    background-image: linear-gradient(90deg, var(--gold-lit), #EFC77E);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+    transition: background-size 0.42s var(--micro-ease);
+  }
+
+  .sobre__cta:hover {
+    background-size: 100% 100%;
+  }
+
+  /* Mesma duração do preenchimento: `color` interpola o rótulo inteiro de uma
+     vez (não é um wipe), então o mínimo é que os dois terminem juntos —
+     com 0.32s o texto ficava escuro antes de o dourado chegar ao fim. */
+  .sobre__cta-label {
+    transition: color 0.42s var(--micro-ease);
+  }
+
+  .sobre__cta:hover .sobre__cta-label {
+    color: var(--gold-dark);
+  }
+
+
+  /* 23.5 Botão "+" dos cards — o círculo cresce, a borda e o glow firmam.
+
+     Sem rotação: o símbolo fica parado. O `<span>` que existia só para girá-lo
+     foi removido do HTML junto com esta regra, então o botão voltou a ter o
+     "+" como texto direto, como no desenho aprovado.
+
+     O `translateX(-50%)` é o que centraliza o botão no card e é repetido aqui
+     de propósito — omiti-lo jogaria o botão 14px para a direita. `opacity`
+     fica fora da transição: é a propriedade que o GSAP usa (via autoAlpha)
+     para trocar o card ativo. */
+  .service-card__more {
+    transition: transform 0.28s var(--micro-ease),
+                box-shadow 0.28s ease,
+                border-color 0.28s ease;
+    box-shadow: 0 0 0 0 rgba(217, 164, 65, 0);
+  }
+
+  .service-card__more:hover {
+    transform: translateX(-50%) scale(1.04);
+    border-color: var(--gold-lit);
+    box-shadow: 0 0 14px rgba(217, 164, 65, 0.4);
+  }
+
+
+  /* 23.6 Reflexo de luz sobre o vidro seguindo o cursor.
+
+     Duas superfícies, uma implementação: o card CTA de Serviços e o Hero.
+     Os dois leem as mesmas custom properties (--mx / --my), escritas pela
+     mesma função do script; só mudam o raio e a intensidade, porque o Hero
+     é uma superfície muito maior e precisa de bem menos brilho por pixel.
+
+     No card, `::before` é o primeiro filho na ordem da árvore, então pinta
+     abaixo de `.servicos__cta-glow` e de `.servicos__cta-content`, que são
+     posicionados com z-index automático: a luz fica sob o texto, na
+     superfície do vidro. O script só escreve --mx e --my; nenhuma
+     propriedade de layout é lida ou alterada por quadro. */
+  .servicos__cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    background-image: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
+                        rgba(217, 164, 65, 0.13),
+                        rgba(217, 164, 65, 0.045) 45%,
+                        transparent 70%);
+    transition: opacity 0.35s ease;
+  }
+
+  .servicos__cta:hover::before {
+    opacity: 1;
+  }
+
+
+  /* Hero — o mesmo reflexo, na escala do frame inteiro.
+
+     Fica em `.hero__inner::before` e não em `.hero::before` por causa da
+     ordem de pintura. Os filhos do Hero são todos posicionados: o fundo tem
+     `z-index: 0` e o advogado, a navbar, o bloco central e a barra de
+     métricas têm 1, 2, 3 e 4. Um pseudo em `.hero` cairia no lugar errado
+     nas duas pontas — `::before` viria antes do fundo (invisível) e
+     `::after`, depois de tudo (por cima do rosto e dos textos). Como
+     `.hero__inner` é `position: relative` sem z-index, ele não cria
+     stacking context, e seu `::before` entra no grupo `auto/0` logo depois
+     do fundo e antes de tudo que tem z-index ≥ 1. Resultado: a luz pousa no
+     fundo e passa por baixo do advogado, da navbar, do CTA e das métricas —
+     nenhum texto perde contraste e o rosto não é tocado.
+
+     Não é preciso z-index em lugar nenhum — em especial não no `.hero`, que
+     ganharia stacking context e trocaria o antialiasing dos textos sobre
+     vidro. A largura acompanha o fundo (100vw centralizado), porque o
+     `.hero__inner` é mais estreito que o Hero acima de 1365px. O raio é
+     bem maior e a opacidade bem menor que no card: sobre uma superfície
+     desse tamanho, o mesmo brilho viraria uma mancha evidente. */
+  .hero__inner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    pointer-events: none;
+    opacity: 0;
+    background-image: radial-gradient(460px circle at var(--mx, 50%) var(--my, -50%),
+                        rgba(217, 164, 65, 0.075),
+                        rgba(217, 164, 65, 0.028) 45%,
+                        transparent 70%);
+    transition: opacity 0.45s ease;
+  }
+
+  .hero:hover .hero__inner::before {
+    opacity: 1;
+  }
+}
+
+
+/* 23.7 Movimento reduzido — nada atravessa, nada gira, nada desliza.
+   Resta a única pista que não depende de movimento: o dourado clareia,
+   instantaneamente. Todos os botões seguem clicáveis e focáveis. */
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .hero-nav__contact:hover,
+  .hero-cta:hover,
+  .sobre__cta:hover,
+  .servicos__cta-button:hover {
+    background-color: var(--gold-lit);
+  }
+
+  .service-card__more:hover {
+    border-color: var(--gold-lit);
+  }
+}
+
+
+/* 23.8 Correção de hit-testing — INICIE O SEU CASO estava inalcançável.
+
+   Não é um efeito: é o que faz o botão existir para o mouse. O SVG das
+   estrelas traz o glow embutido e sangra 248.47px na horizontal e 248.88px
+   na vertical (por isso a `img` mede 596.945 x 516.165 dentro de uma caixa
+   de 100 x 20). Como `.hero-rating__stars` não recorta, essa caixa
+   transparente cobre a região inteira do CTA: medido, `elementFromPoint` no
+   centro do botão devolvia a `img` das estrelas, e não o link. O botão nunca
+   respondeu a hover nem a clique — comportamento anterior a esta etapa.
+
+   `pointer-events: none` numa imagem decorativa (alt vazio) devolve o botão
+   sem mover um pixel: a estrela continua desenhada exatamente onde estava,
+   só deixa de participar do teste de acerto. Fora da media query de hover
+   porque o toque precisa igualmente alcançar o link. */
+
+.hero-rating__stars img {
+  pointer-events: none;
+}
+
+
+/* ==========================================================================
+   24. SERVIÇOS — descrições de 4 linhas
+
+   Dois textos não cabem nas 3 linhas dos outros quatro: "Suporte jurídico
+   para proteger seus direitos em casos de acidentes e doenças ocupacionais"
+   (89 caracteres) e "Atuação estratégica em conflitos trabalhistas, buscando
+   segurança e a melhor solução para o seu caso" (100). Medido no card ativo,
+   os dois quebravam em 4 linhas e terminavam em y=336.19, enquanto o botão
+   "+" começa em y=334.19 — ou seja, o texto já invadia o botão em 2px. Os
+   outros quatro terminam em 319.19, com 15px de folga.
+
+   13px é o menor ajuste que resolve: os dois voltam a 3 linhas, a altura da
+   descrição cai de 68 para 48 e a folga passa de −2 para +18px. O
+   `line-height` continua `normal`, igual ao de todos os cards.
+
+   Só no estado ativo. Inativo a descrição usa 10px e sobram 66px até a base
+   do card, então nada muda — e, como o desenho aprovado mostra o card 1
+   ativo e estes dois inativos, o estado estático segue idêntico.
+   ========================================================================== */
+
+.service-card--desc-longa.service-card--active .service-card__desc {
+  font-size: 13px;
+}
